@@ -1,4 +1,5 @@
 
+console.disableYellowBox = true
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,8 +9,10 @@ import Cadastro from './src/views/Cadastro';
 import Principal from './src/views/Principal';
 import Rede from './src/views/Rede';
 
-export default function App(){
 
+
+export default function App(){
+  
   const Stack = createStackNavigator();
 
   return(
