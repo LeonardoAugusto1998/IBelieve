@@ -21,7 +21,8 @@ import {
     CategoriaText,
     ListaCategorias,
     ListaEstabelecimento,
-    Linha
+    Linha,
+    ModalView
 } from './principalStyle';
 
 export default function Principal({ navigation }){
@@ -103,6 +104,12 @@ export default function Principal({ navigation }){
             </InputView>
 
 
+
+
+                    
+
+
+
             
                 <ListaCategorias
                     showsVerticalScrollIndicator={false}
@@ -135,8 +142,6 @@ export default function Principal({ navigation }){
                         );
                     }}
                     />
-
-
 
                     <Linha/>
 

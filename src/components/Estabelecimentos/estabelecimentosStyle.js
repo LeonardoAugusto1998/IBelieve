@@ -149,3 +149,21 @@ font-weight: bold;
 font-size: 10px;
 color: #000;
 `
+
+export const ModalView = styled.View`
+width: 350px;
+height: 470px;
+margin: auto;
+background-color: #696969;
+border-radius: 10px;
+`
+
+export const FecharView = styled.View`
+margin-left: 20px;
+background-color: #EDEDED
+width: 50px;
+height: 30px;
+justify-content: center;
+align-items: center;
+border-radius: 10px;
+`

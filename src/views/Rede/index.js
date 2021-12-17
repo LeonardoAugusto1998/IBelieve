@@ -27,7 +27,6 @@ import {
     CameraView,
     FotoView
 } from './redeStyle';
-import { FlatList } from 'react-native-gesture-handler';
 
 export default function Rede({ navigation }){
 
@@ -36,6 +35,7 @@ export default function Rede({ navigation }){
 
     const [seguidoresLista, setSeguidoresLista] = React.useState(seguidores);
     const [image, setImage] = React.useState(null);
+    const [imageDoc, setImageDoc] = React.useState(null);
 
     async function handleChangePhoto(){
 
@@ -44,11 +44,14 @@ export default function Rede({ navigation }){
             maxWidth: 90,
             maxHeight: 90,
             cameraType: 'front',
-            quality: 1,
-            saveToPhotos: true
+            
         }
 
-        const Picker = launchCamera(options, () => {console.log('Deu certo')})
+        const Picker = launchImageLibrary(options)
+        .then( ( doc ) => {
+            
+        })
+
     }
 
     return(
@@ -76,7 +79,7 @@ export default function Rede({ navigation }){
             <LogoView w={w}>
 
                 <FotoView onPress={ handleChangePhoto }>
-                    {image === null ? <FotoPessoal source={avatar}/> : <FotoPessoal source={rock}/>}
+                    {image === null ? <FotoPessoal source={avatar}/> : <FotoPessoal source={image.assets.uri}/>}
 
                     <CameraView>
                         <Camera width={13} height={13}/>
@@ -94,7 +97,7 @@ export default function Rede({ navigation }){
                     
                     
                     <Nome>Dwane The Rock</Nome>
-                    <TextoDeBaixo>30 Pessoas convidadas</TextoDeBaixo>
+                    <TextoDeBaixo>{seguidoresLista.length} Pessoas convidadas</TextoDeBaixo>
                 </NomesLogo>
 
             </LogoView>

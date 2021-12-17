@@ -2,10 +2,11 @@
 
 
 import * as React from 'react';
-import { View, Text, Dimensions, Alert } from 'react-native';
+import { View, Text, Dimensions, Alert, Modal, TouchableOpacity } from 'react-native';
 import Phonesvg from '../../assets/phone.svg';
 import Menos from '../../assets/close_down.svg';
 import googleImage from '../../assets/download.png';
+import { WebView } from 'react-native-webview';
 import {
     EstabelecimentoView,
     EstabelecimentoText,
@@ -27,7 +28,9 @@ import {
     EnderecoText,
     TextoMenor,
     EnderecoNomes,
-    EnderecoReal
+    EnderecoReal,
+    ModalView,
+    FecharView
 } from './estabelecimentosStyle';
 
 
@@ -40,10 +43,13 @@ export const estabelecimentos = [
         fotoUrl: 'https://media-exp1.licdn.com/dms/image/C560BAQFzHqqk5S0sAA/company-logo_200_200/0/1618230631209?e=2159024400&v=beta&t=nJugV9gdMiueAE0DsNaO7096eA7Opx8vg0gtcAZ6FRw',
         categoria1: 'Comércio',
         categoria2: 'Bem-estar',
-        endereco: 'Alça Viária',
-        telefone:'(91) 9 8457-1832',
-        status: false
-    },
+        rua: 'Alca Viaria 13 km 1,5',
+        numero: '',
+        cidade: 'Marituba',
+        estado: 'PA',
+        telefone:'(91) 3366-3066',
+        status: false,
+        },
     {
         id: '2',
         nome: 'Ricambi',
@@ -51,10 +57,13 @@ export const estabelecimentos = [
         fotoUrl: 'https://yt3.ggpht.com/ytc/AKedOLShzdJZdCl0FBehyY0C4phOofOqpTvZIf8LwnrOKQ=s900-c-k-c0x00ffffff-no-rj',
         categoria1: 'Serviços',
         categoria2: null,
-        endereco: 'Rua 15 de Março',
-        telefone:'(91) 9 1341-5211',
-        status: false
-    },
+        rua: 'Baruel',
+        numero: '477',
+        cidade: 'Sao Paulo',
+        estado: 'SP',
+        telefone:'(11) 2164-0300',
+        status: false,
+        },
     {
         id: '3',
         nome: 'Pavoni',
@@ -62,10 +71,13 @@ export const estabelecimentos = [
         fotoUrl: 'https://i.pinimg.com/280x280_RS/cc/cb/1d/cccb1dd35c804f7a73fb883f7aa74163.jpg',
         categoria1: 'Bem-estar',
         categoria2: 'Alimentação',
-        endereco: 'Rua 15 de Março, 243, Centro',
+        rua: 'Diamantina',
+        numero: '816',
+        cidade: 'Sao Paulo',
+        estado: 'SP',
         telefone:'(91) 1523-9556',
-        status: false
-    },
+        status: false,
+        },
     {
         id: '4',
         nome: 'MundialTractor',
@@ -73,9 +85,12 @@ export const estabelecimentos = [
         fotoUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnA2chHgPMLphXKzOgGzF14ycTipTAdX-3fBfbGaNWZHlq2U0i5IjaXn5DWwRU7gzj3Fo&usqp=CAU',
         categoria1: 'Comércio',
         categoria2: 'Serviços',
-        endereco: 'Passagem Tira Dentes, 540, Ananindeua',
+        rua: '13 de Maio',
+        numero: '250',
+        cidade: 'piracicaba',
+        estado: 'SP',
         telefone:'(91) 3254-0912',
-        status: false
+        status: false,
     },
     {
         id: '5',
@@ -84,9 +99,12 @@ export const estabelecimentos = [
         fotoUrl: 'https://yt3.ggpht.com/ytc/AKedOLSxqs39LDN0eO7ctMsmHDaPNVc4O3b_hQo8WRPP=s900-c-k-c0x00ffffff-no-rj',
         categoria1: 'Bem-estar',
         categoria2: 'Serviços',
-        endereco: 'Av. Henry Ford, 1001, Sao Paulo/SP',
+        rua: 'Henry Ford',
+        numero: '100',
+        cidade: 'Sao Paulo',
+        estado: 'SP',
         telefone:'(11) 3017-8990',
-        status: false
+        status: false,
     }
 ];
 
@@ -106,6 +124,9 @@ export function Estabelecimentos({item}){
     const [colorCat1, setColorCat1] = React.useState('rgb(146,196,222)');
     const [colorCat2, setColorCat2] = React.useState('rgb(144,238,144)');
     const [colorCat3, setColorCat3] = React.useState('rgb(255,255,20)');
+
+    const [dados, setDados] = React.useState({});
+    const [visivel, setVisivel] = React.useState(false);
 
 
     const [data, setData] = React.useState(item);
@@ -169,7 +190,7 @@ export function Estabelecimentos({item}){
 
 
 
-            <EnderecoView w={w} onPress={ () => { Alert.alert(data.endereco) } }>
+            <EnderecoView w={w} onPress={ () => { setDados(item); setVisivel(true) } }>
 
                 <GoogleImage source={ googleImage }/>
 
@@ -182,7 +203,7 @@ export function Estabelecimentos({item}){
                             <TextoMenor>Toque para ver no Maps</TextoMenor>
                         </EnderecoNomes>
 
-                        <EnderecoReal>{data.endereco}</EnderecoReal>
+                        <EnderecoReal>{data.rua}, {data.numero}, {data.cidade}/{data.estado}</EnderecoReal>
 
                     </ParteDosNomes>
 
@@ -202,7 +223,23 @@ export function Estabelecimentos({item}){
            <></>
            }
 
+                    <Modal
+                    visible={visivel}
+                    animationType='slide'
+                    transparent={true}
+                    >
+                        <ModalView>
 
+                            <FecharView>
+                                <Text onPress={()=>{setVisivel(false)}}>Fechar</Text>
+                            </FecharView>
+
+                        <WebView
+                        source={{uri: `https://www.google.com.br/maps/place/${dados.rua}+${dados.numero}+${dados.cidade}+-+${dados.estado}`}}
+                        />
+
+                        </ModalView>
+                    </Modal>
 
     </ParteDeFora>
     );

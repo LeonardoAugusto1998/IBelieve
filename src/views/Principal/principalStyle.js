@@ -122,3 +122,13 @@ width: 200px;
 border-radius: 15px;
 margin-bottom: 20px;
 `
+
+export const ModalView = styled.View`
+width: 350px;
+height: 400px;
+background-color: #696969;
+align-items: center;
+justify-content: center;
+margin: auto;
+border-radius: 8px;
+`
