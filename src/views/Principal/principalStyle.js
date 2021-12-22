@@ -107,8 +107,8 @@ font-weight: bold;
 `
 
 export const ListaCategorias = styled.FlatList`
-margin-bottom: 5px;
-height: 150px;
+margin-bottom: 20px;
+height: 170px;
 `
 
 export const ListaEstabelecimento = styled.FlatList`

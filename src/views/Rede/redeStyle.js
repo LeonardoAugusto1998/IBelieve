@@ -95,3 +95,34 @@ border-radius: 50px;
 export const FotoView = styled.TouchableOpacity`
 
 `
+
+export const AbrirCamera = styled.Text`
+color: #000;
+font-weight: bold;
+font-size: 18px;
+padding: 10px;
+text-align-vertical: center;
+`
+
+export const ModalViewCamera = styled.View`
+background-color: #A9A9A9;
+width: ${props => props.w}
+position: absolute;
+bottom: 0px;
+justify-contetn: center;
+align-items: center;
+padding-bottom: 25px;
+padding-top: 25px;
+border-top-left-radius: 30px;
+border-top-right-radius: 30px;
+`
+
+export const Botoes = styled.TouchableOpacity`
+background-color: ${props => props.cor};
+width: ${props => props.w - 30};
+align-items: center;
+justify-content: center;
+border-radius: 10px;
+margin-bottom: 10px;
+flex-direction: row;
+`

@@ -32,9 +32,7 @@ export default function Principal({ navigation }){
     const h = Dimensions.get('window').height;
     const [lista, setLista] = React.useState(categorias);
     const [listaEstab, setListaEstab] = React.useState(estabelecimentos);
-    const [colorCat1, setColorCat1] = React.useState('rgb(146,196,222)');
-    const [colorCat2, setColorCat2] = React.useState('rgb(144,238,144)');
-    const [colorCat3, setColorCat3] = React.useState('rgb(255,255,20)');
+    const [order, setOrder] = React.useState(false);
 
     const [digit, setDigit] = React.useState('')
 
@@ -65,13 +63,46 @@ export default function Principal({ navigation }){
 
     }, [digit]);
 
+    
+
     function clickCategoria({ item }){
-        
+        if( order ){
+
+            setListaEstab(estabelecimentos);
+            setOrder( false );
+
+        }else{
+            setListaEstab(
+                estabelecimentos.filter( doc => {
+                    if(doc.categoria1 === null) {
+                       return doc.categoria2 === item.nome
+                    }
+
+                    if(doc.categoria2 === null) {
+                       return doc.categoria1 === item.nome
+                    }
+
+                    if(doc.categoria1 !== null && doc.categoria2 !== null){
+                        return doc.categoria1 === item.nome || doc.categoria2 === item.nome
+                    }
+                })
+            )
+            setOrder(true);
+        }
+
     }
 
     return(
+
+
         <Container>
+            
             <StatusBar backgroundColor={'#DCDCDC'}/>
+
+
+
+
+
             <AreaLogo>
 
 
@@ -89,8 +120,14 @@ export default function Principal({ navigation }){
             </AreaLogo>
 
 
+
+
+
             <BemVindo>BEM-VINDO</BemVindo>
             <Conheca>Conheça os nossos Parceiros</Conheca>
+
+
+
 
             <InputView>
                 <Input
@@ -128,6 +165,8 @@ export default function Principal({ navigation }){
 
             
             
+
+
             
                 <ListaEstabelecimento
                     w={w}
@@ -143,7 +182,14 @@ export default function Principal({ navigation }){
                     }}
                     />
 
+
+
+
+
+
                     <Linha/>
+
+
 
         </Container>
     );

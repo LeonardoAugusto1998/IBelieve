@@ -154,16 +154,20 @@ export const ModalView = styled.View`
 width: 350px;
 height: 470px;
 margin: auto;
-background-color: #696969;
 border-radius: 10px;
 `
 
 export const FecharView = styled.View`
-margin-left: 20px;
-background-color: #EDEDED
-width: 50px;
+background-color: #FFF;
+width: 70px;
 height: 30px;
 justify-content: center;
 align-items: center;
-border-radius: 10px;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+`
+
+export const FecharText = styled.Text`
+color: #000;
+font-weight: bold;
 `

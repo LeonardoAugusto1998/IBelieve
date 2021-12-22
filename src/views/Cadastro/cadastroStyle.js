@@ -77,7 +77,7 @@ export const IconView = styled.TouchableOpacity`
 z-index: 9;
 height: 30px;
 position: absolute;
-right: 40px;
+right: 52px;
 align-items: center;
 justify-content: center;
 top: 10px;

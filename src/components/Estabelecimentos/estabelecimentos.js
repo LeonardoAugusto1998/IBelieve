@@ -30,7 +30,8 @@ import {
     EnderecoNomes,
     EnderecoReal,
     ModalView,
-    FecharView
+    FecharView,
+    FecharText
 } from './estabelecimentosStyle';
 
 
@@ -231,7 +232,7 @@ export function Estabelecimentos({item}){
                         <ModalView>
 
                             <FecharView>
-                                <Text onPress={()=>{setVisivel(false)}}>Fechar</Text>
+                                <FecharText onPress={()=>{setVisivel(false)}}>Fechar</FecharText>
                             </FecharView>
 
                         <WebView
