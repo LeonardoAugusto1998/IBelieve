@@ -18,14 +18,14 @@ export default function App(){
   return(
     <NavigationContainer>
       <Stack.Navigator
-      initialRouteName='Cadastro'
+      initialRouteName='Login'
       screenOptions={{headerShown: false}}
       >
         
-        <Stack.Screen name='Login' component={Login}/>
-        <Stack.Screen name='Cadastro' component={Cadastro}/>
-        <Stack.Screen name='Principal' component={Principal}/>
-        <Stack.Screen name='Rede' component={Rede}/>
+        <Stack.Screen name='Login' component={ Login }/>
+        <Stack.Screen name='Cadastro' component={ Cadastro }/>
+        <Stack.Screen name='Principal' component={ Principal }/>
+        <Stack.Screen name='Rede' component={ Rede }/>
 
       </Stack.Navigator>
 

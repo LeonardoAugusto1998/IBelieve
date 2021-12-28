@@ -6,13 +6,14 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "dev" : "nodemon serverConfig.js",
+    "dev": "nodemon serverConfig.js",
     "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
+    "axios": "^0.24.0",
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "mysql": "^2.18.1",

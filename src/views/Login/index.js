@@ -4,6 +4,7 @@ import backgroundImage from '../../assets/background.png';
 import logo_small from '../../assets/logo_small.png';
 import OlhoAberto from '../../assets/show_password.svg';
 import OlhoFechado from '../../assets/hide_password.svg';
+import Axios from 'axios';
 import { 
     BackImage, 
     WhitePart, 
@@ -63,7 +64,10 @@ export default function Login({ navigation }){
             return;
         }
 
-        console.log(login)
+        Axios.post("http://localhost:3001/mandar", {
+            login: login,
+            senha: senha
+        })
     }
 
     return(
