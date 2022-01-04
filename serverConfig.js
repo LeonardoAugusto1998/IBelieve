@@ -29,17 +29,6 @@ app.post('/mandar', (req, res) => {
 
 
 
-var server = app.listen(3001, () => {
-    var host = server.address().address
-    var port = server.address().port
-
-    console.log(host + ' ' + port)
-})
-
-db.connect((err) => {
-    if(err){
-        console.log('Teve um erro po =>' + err)
-    } else {
-        console.log('Conectou')
-    }
+app.listen(3001, () => {
+   console.log('Servidor Rodando com Sucesso na porta 3001')
 })

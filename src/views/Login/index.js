@@ -65,9 +65,11 @@ export default function Login({ navigation }){
             return;
         }
 
-        Axios.post('http://10.0.2.2:8097/mandar', {
+        Axios.post('http://10.0.2.2:3001/mandar', {
             login: login,
             senha: senha
+        }).catch((err) => {
+            console.log( 'Ocorreu um erro ' + err)
         })
 
     }
