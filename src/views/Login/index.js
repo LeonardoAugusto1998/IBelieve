@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Dimensions, ScrollView, Text, StatusBar, Alert} from 'react-native';
+import { View, Dimensions, ScrollView, Text, StatusBar} from 'react-native';
 import backgroundImage from '../../assets/background.png';
 import logo_small from '../../assets/logo_small.png';
 import OlhoAberto from '../../assets/show_password.svg';
@@ -47,6 +47,7 @@ export default function Login({ navigation }){
             setBorderColor1('#EC391D');
             setErrorLogin(true);
             setTimeout( () => {
+                
                 setBorderColor1('#EDEDED');
                 setErrorLogin(false);
 
@@ -64,10 +65,11 @@ export default function Login({ navigation }){
             return;
         }
 
-        Axios.post("http://localhost:3001/mandar", {
+        Axios.post('http://10.0.2.2:8097/mandar', {
             login: login,
             senha: senha
         })
+
     }
 
     return(
