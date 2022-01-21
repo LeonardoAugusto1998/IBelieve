@@ -16,13 +16,17 @@ app.use(express.json());
 // npm run dev para rodar a api com nodemon
 
 
-app.post('/mandar', (req, res) => {
+app.post('/cadastrar', (req, res) => {
 
     login = req.body.login,
     senha = req.body.senha
 
-    console.log(login + senha);
-    console.log('Deu certo');
+    db.query('SELECT * FROM ibelieve.usuarios WHERE login = (', [login],
+    (err, result) => {
+        res.send(result)
+    })
+    
+    
 
 })
 

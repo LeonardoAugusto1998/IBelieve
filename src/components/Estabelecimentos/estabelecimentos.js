@@ -118,13 +118,11 @@ export const estabelecimentos = [
 export function Estabelecimentos({item}){
 
     const w = Dimensions.get('window').width;
-    const h = Dimensions.get('window').height;
 
     const [border, setBorder] = React.useState(5);
 
     const [colorCat1, setColorCat1] = React.useState('rgb(146,196,222)');
     const [colorCat2, setColorCat2] = React.useState('rgb(144,238,144)');
-    const [colorCat3, setColorCat3] = React.useState('rgb(255,255,20)');
 
     const [dados, setDados] = React.useState({});
     const [visivel, setVisivel] = React.useState(false);
@@ -177,7 +175,7 @@ export function Estabelecimentos({item}){
 
 
            {data.status ? 
-           <ParteInvisivel>
+           <ParteInvisivel w={w}>
 
            <Linha2/>
 

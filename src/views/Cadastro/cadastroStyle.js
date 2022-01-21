@@ -9,7 +9,7 @@ justify-content: flex-end;
 
 export const WhitePart = styled.KeyboardAvoidingView`
 width: ${props => props.w - 30};
-height: ${props => props.h + 200};
+height: ${props => props.h + 280};
 background-color: #FFF;
 border-top-left-radius: 15px;
 border-top-right-radius: 15px;
@@ -77,7 +77,7 @@ export const IconView = styled.TouchableOpacity`
 z-index: 9;
 height: 30px;
 position: absolute;
-right: 52px;
+right: 25px;
 align-items: center;
 justify-content: center;
 top: 10px;

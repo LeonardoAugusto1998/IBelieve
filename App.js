@@ -18,7 +18,7 @@ export default function App(){
   return(
     <NavigationContainer>
       <Stack.Navigator
-      initialRouteName='Login'
+      initialRouteName='Cadastro'
       screenOptions={{headerShown: false}}
       >
         

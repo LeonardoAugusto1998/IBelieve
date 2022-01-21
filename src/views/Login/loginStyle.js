@@ -10,11 +10,11 @@ justify-content: flex-end;
 export const WhitePart = styled.KeyboardAvoidingView`
 width: ${props => props.w};
 max-height: ${props => props.h + 300};
-height: ${props => props.h + 100};
+height: ${props => props.h + 160};
 background-color: #FFF;
 border-top-left-radius: 15px;
 border-top-right-radius: 15px;
-margin-top: 70px;
+margin-top: 50px;
 `
 
 export const Logo_small_image = styled.Image`
@@ -48,6 +48,7 @@ margin-bottom: 10px;
 
 export const Input = styled.TextInput`
 margin: auto;
+margin-bottom: 20px;
 height: 50px;
 width: 300px;
 background-color: #FFF;
@@ -64,7 +65,7 @@ width: 300px;
 justify-content: center;
 align-items: center;
 border-radius: 5px;
-margin-bottom: 70px
+margin-bottom: 70px;
 `
 
 export const Textinho = styled.Text`
@@ -90,13 +91,10 @@ font-weight: bold;
 `
 
 export const Linha = styled.View`
-
 border-bottom-width: 5px;
 border-bottom-color: #000;
 width: 200px;
 border-radius: 15px;
-margin-bottom: 15px;
-margin-top: 30px;
 `
 
 export const AreaButtons = styled.View`
@@ -115,7 +113,7 @@ export const IconView = styled.TouchableOpacity`
 z-index: 9;
 height: 30px;
 position: absolute;
-right: 52px;
+right: 25px;
 align-items: center;
 justify-content: center;
 top: 10px;

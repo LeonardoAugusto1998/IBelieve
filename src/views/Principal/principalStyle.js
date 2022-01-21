@@ -15,7 +15,7 @@ height: 50px;
 export const AreaLogo = styled.View`
 flex-direction: row;
 align-items: center;
-justify-content: space-between;
+justify-content: space-around;
 margin-top: 40px;
 margin-bottom: 40px;
 `
@@ -28,7 +28,7 @@ width: 80px;
 height: 45px;
 justify-content: center;
 align-items: flex-start;
-margin-left: 90px;
+margin-left: 70px;
 `
 
 export const NumText = styled.Text`
@@ -107,8 +107,8 @@ font-weight: bold;
 `
 
 export const ListaCategorias = styled.FlatList`
-margin-bottom: 20px;
-height: 170px;
+margin-bottom: 15px;
+height: 190px;
 `
 
 export const ListaEstabelecimento = styled.FlatList`

@@ -24,6 +24,7 @@ import {
     ErrorText
 } from './cadastroStyle';
 import { interfaceExtends } from '@babel/types';
+import axios from 'axios';
 
 export default function Cadastro({ navigation }){
 
@@ -63,7 +64,7 @@ export default function Cadastro({ navigation }){
     const [recomendou, setRecomendou] = React.useState('');
 
 
-    function cadastrar() {
+    async function cadastrar() {
         
         if(nome === '') {
             setBorderNome('#EC391D');
@@ -128,6 +129,17 @@ export default function Cadastro({ navigation }){
             }, 6000);
             return;
         }
+
+        let data = {
+            nome: nome,
+            email: email,
+
+        }
+        axios.post('http://192.168.0.116:3001/cadastrar',
+        {
+
+        }
+    )
 
 
         navigation.navigate('Principal')
