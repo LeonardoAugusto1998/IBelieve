@@ -18,15 +18,28 @@ app.use(express.json());
 
 app.post('/cadastrar', (req, res) => {
 
-    login = req.body.login,
-    senha = req.body.senha
+    nome = req.body.nome,
+    email = req.body.email,
+    telefone = req.body.telefone,
+    cpf = req.body.cpf,
+    nascimento = req.body.nascimento,
+    senha = req.body.senha,
+    recomendou = req.body.recomendou,
+    fotoUrl = null,
+    nivel = 1
 
-    db.query('SELECT * FROM ibelieve.usuarios WHERE login = (', [login],
-    (err, result) => {
+   const SQL_INSERT = 'INSERT INTO ibelieve.usuarios (nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel) VALUES (?,?,?,?,?,?,?,?,?)'
+   db.query(SQL_INSERT, [nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel], (err, result) => {
+
+    if(err) {
+        console.log('Teve um erro --> ' + err)
+    } else {
         res.send(result)
-    })
+    }
     
-    
+   }) 
+
+
 
 })
 

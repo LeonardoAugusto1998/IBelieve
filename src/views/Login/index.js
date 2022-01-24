@@ -65,12 +65,12 @@ export default function Login({ navigation }){
             return;
         }
 
-        Axios.post('http://10.0.2.2:3001/mandar', {
+        Axios.post('http://192.168.0.116:3001/cadastrar', {
             login: login,
             senha: senha
         })
         .then((result) => {
-            console.log(result.data)
+            console.log(result.config.data)
         })
 
     }

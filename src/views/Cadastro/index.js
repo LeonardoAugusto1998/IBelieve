@@ -132,17 +132,18 @@ export default function Cadastro({ navigation }){
 
         let data = {
             nome: nome,
-            email: email,
-
+            email: email.toLocaleLowerCase(),
+            telefone: telefone,
+            cpf: cpf,
+            nascimento: nascimento,
+            senha: senha,
+            recomendou: recomendou.toLocaleLowerCase()
         }
-        axios.post('http://192.168.0.116:3001/cadastrar',
-        {
-
-        }
-    )
-
-
-        navigation.navigate('Principal')
+        await axios.post('http://192.168.0.116:3001/cadastrar', data )
+        .then((result) => {
+            console.log(result.data.nome);
+            navigation.navigate('Principal')
+        })
     }
 
 
@@ -183,6 +184,7 @@ export default function Cadastro({ navigation }){
             } }
             placeholder='Qual é o seu nome?'
             value={nome}
+            maxLength={40}
             onChangeText={ (text) => {setNome(text)} }
             />
             {errorNome ? <ErrorText>*Campo Obrigatório*</ErrorText> : <></>}
