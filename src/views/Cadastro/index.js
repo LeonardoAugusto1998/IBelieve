@@ -141,8 +141,8 @@ export default function Cadastro({ navigation }){
         }
         await axios.post('http://192.168.0.116:3001/cadastrar', data )
         .then((result) => {
-            console.log(result.data.nome);
-            navigation.navigate('Principal')
+            console.log(result.config.data);
+            
         })
     }
 
