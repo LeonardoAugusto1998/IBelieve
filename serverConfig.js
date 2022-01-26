@@ -30,23 +30,112 @@ app.post('/cadastrar', (req, res) => {
     fotoUrl = null,
     nivel = 1
 
-   const SQL_INSERT = 'INSERT INTO ibelieve.usuarios (nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel) VALUES (?,?,?,?,?,?,?,?,?)'
-   db.query(SQL_INSERT, [nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel], (err, result) => {
+    const SQL_SEARCH_EMAIL = 'SELECT * FROM ibelieve.usuarios WHERE email = ?'
+    db.query(SQL_SEARCH_EMAIL, email, (err, result1) => {
 
-    if(err) {
+        if(err) {
 
-        console.log('Teve um erro --> ' + err);
-
-    } else {
-
-        res.send(result);
-        console.log(result);
-
-    }
+            console.log('Teve um erro --> ' + err);
+            res.send(JSON.stringify('DEU_PROBLEMA'));
+            return
     
+        } else {
+            if (JSON.stringify(result1) !== '[]'){
+                res.send(JSON.stringify('EMAIL_EXISTE'));
+                return
+            }
+        }
+
+    })
+
+
+    // const SQL_SEARCH_CPF = 'SELECT * FROM ibelieve.usuarios WHERE cpf = ?'
+    // db.query(SQL_SEARCH_CPF, cpf, (err, result2) => {
+
+    //     if(err) {
+
+    //         console.log('Teve um erro --> ' + err);
+    //         res.send(JSON.stringify('DEU_PROBLEMA'));
+    //         return;
+    
+    //     } else {
+
+    //         if (JSON.stringify(result2) !== '[]'){
+    //             res.send(JSON.stringify('CPF_EXISTE'));
+    //             return;
+    //         }
+
+    //     }
+
+    // })
+
+    
+    // const SQL_SEARCH_RECOMENDOU = 'SELECT * FROM ibelieve.usuarios WHERE recomendou = ?'
+    // db.query(SQL_SEARCH_RECOMENDOU, recomendou, (err, result3) => {
+
+    //     if(err) {
+
+    //         console.log('Teve um erro --> ' + err);
+    //         res.send(JSON.stringify('DEU_PROBLEMA'));
+    //         return;
+    
+    //     } else {
+
+    //         if (JSON.stringify(result3) !== '[]'){
+    //             res.send(JSON.stringify('NAO_EXISTE_RECOMENDOU'));
+    //             return;
+    //         }
+
+    //     }
+
+    // })
+
+
+
+    // const SQL_INSERT = 'INSERT INTO ibelieve.usuarios (nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel) VALUES (?,?,?,?,?,?,?,?,?)'
+    // db.query(SQL_INSERT, [nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel], (err, result) => {
+
+    //     if(err) {
+
+    //         console.log('Teve um erro --> ' + err);
+    //         res.send(JSON.stringify('DEU_PROBLEMA'))
+    
+    //     } else {
+    
+    //        res.send(result);
+    //        console.log('Cadastrou com Sucesso !')
+    
+    //         }
+
+    // })
+
 })
 
 
+
+app.post('/login', (req, res) => {
+
+    login = req.body.login,
+    senha = req.body.senha
+
+    const SQL_SELECT = 'SELECT * FROM ibelieve.usuarios WHERE email = ? AND senha = ?';
+    db.query(SQL_SELECT, [login, senha], (err, result) => {
+
+        if(err) {
+
+            console.log('Teve um erro --> ' + err);
+    
+        } else {
+
+            if (JSON.stringify(result) === '[]'){
+                res.send(JSON.stringify(null));
+            } else {
+                res.send(result);
+            }
+    
+            }
+        
+    })
 
 })
 

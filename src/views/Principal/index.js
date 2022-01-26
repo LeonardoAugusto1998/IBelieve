@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, Modal, StatusBar, Dimensions } from 'react-native';
+import { View, BackHandler, StatusBar, Dimensions, Alert } from 'react-native';
 import Logo from '../../assets/logonew.png';
 import GroupSvg from '../../assets/group.svg';
 import SearchSvg from '../../assets/search.svg';
 import { categorias } from '../../components/Categorias/categorias';
 import { estabelecimentos, Estabelecimentos} from '../../components/Estabelecimentos/estabelecimentos';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     Container,
     LogoImg,
@@ -34,7 +35,46 @@ export default function Principal({ navigation }){
     const [listaEstab, setListaEstab] = React.useState(estabelecimentos);
     const [order, setOrder] = React.useState(false);
 
-    const [digit, setDigit] = React.useState('')
+    const [digit, setDigit] = React.useState('');
+
+    const [userDados, setUserDados] = React.useState({});
+
+
+    React.useEffect(() => {
+
+
+        const backAction = () => {
+          Alert.alert("Atenção", "Tem certeza que deseja sair?", [
+            {
+              text: "Cancel",
+              onPress: () => null,
+              style: "cancel"
+            },
+            { text: "Sair", onPress: async () => {
+                BackHandler.exitApp(); await AsyncStorage.clear();
+            } }
+          ]);
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+    
+        return () => backHandler.remove();
+
+
+        async function buscar_dados(){
+
+            const get_item = await AsyncStorage.getItem('@user')
+            setUserDados(JSON.parse(get_item));
+
+        };
+
+        buscar_dados();
+
+      }, []);
 
     React.useEffect(()=>{
         setLista(categorias);

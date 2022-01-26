@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { View, Modal, StatusBar, Dimensions, Alert, TouchableOpacity, Text } from 'react-native';
+import { View, Modal, StatusBar, Dimensions, BackHandler} from 'react-native';
 import BackArrow from '../../assets/arrow.svg';
 import logo from '../../assets/logonew.png';
-import rock from '../../assets/rock.png';
 import IconGroup from '../../assets/group.svg';
 import Camera from '../../assets/camera.svg';
 import { seguidores, Seguidores } from '../../components/Seguidores/seguidores';
@@ -80,6 +79,19 @@ export default function Rede({ navigation }){
 
 
     }
+
+    React.useEffect(() => {
+
+        function backAction(){
+            navigation.navigate('Principal');
+        }
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+          );
+
+    }, [])
 
     return(
 

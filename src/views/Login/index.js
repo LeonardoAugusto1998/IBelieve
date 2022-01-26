@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { View, Dimensions, ScrollView, Text, StatusBar} from 'react-native';
+import { View, Dimensions, ScrollView, Text, StatusBar, Alert} from 'react-native';
 import backgroundImage from '../../assets/background.png';
 import logo_small from '../../assets/logo_small.png';
 import OlhoAberto from '../../assets/show_password.svg';
 import OlhoFechado from '../../assets/hide_password.svg';
-import Axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../../services/api';
 import { 
     BackImage, 
     WhitePart, 
@@ -42,7 +43,7 @@ export default function Login({ navigation }){
     const[login, setLogin] = React.useState('');
     const[senha, setSenha] = React.useState('');
 
-    function acessar(){
+    async function acessar(){
         if(login === '') {
             setBorderColor1('#EC391D');
             setErrorLogin(true);
@@ -65,15 +66,46 @@ export default function Login({ navigation }){
             return;
         }
 
-        Axios.post('http://192.168.0.116:3001/cadastrar', {
-            login: login,
+        let data = {
+
+            login: login.toLocaleLowerCase(),
             senha: senha
-        })
-        .then((result) => {
-            console.log(result.config.data)
+
+        }
+
+        await api.post('login', data )
+        .then( async (result) => {
+            if ( result.data === null ) {
+                Alert.alert('Autenticação', 'Login ou Senha incorretos !')
+            } else {
+                const jsonValue = JSON.stringify(result.data)
+                await AsyncStorage.setItem('@user', jsonValue)
+                navigation.navigate('Principal');
+            }
         })
 
     }
+
+
+    React.useEffect(() => {
+
+        async function ver_usuario(){
+            try {
+                const value = await AsyncStorage.getItem('@user')
+                if(value === null) {
+                    console.log(value);
+                } else {
+                    navigation.navigate('Principal');
+                    console.log(value);
+                }
+            } catch(e) {
+                console.log('Houve um erro --> ' + e)
+            }
+        }
+
+        ver_usuario();
+
+    }, [])
 
     return(
         <BackImage
@@ -89,8 +121,10 @@ export default function Login({ navigation }){
 
             <Logo_small_image source={logo_small}/>
 
-            <BemVindoText>BEM-VINDO</BemVindoText>
+            <BemVindoText>BEM--VINDO</BemVindoText>
             <GrandeText>Ao clube de vantagens da I Believe</GrandeText>
+
+
 
             <Label>Login</Label>
             <Input
