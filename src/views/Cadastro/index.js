@@ -24,7 +24,7 @@ import {
     ErrorText
 } from './cadastroStyle';
 import { interfaceExtends } from '@babel/types';
-import axios from 'axios';
+import Axios from 'axios';
 
 export default function Cadastro({ navigation }){
 
@@ -144,6 +144,7 @@ export default function Cadastro({ navigation }){
             console.log(result.config.data);
             
         })
+
     }
 
 
@@ -153,7 +154,7 @@ export default function Cadastro({ navigation }){
         source={backgroundImage}
         resizeMode="cover"
         >
-            <StatusBar backgroundColor={'#DFC411'} />
+            <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
                             <ScrollView showsVerticalScrollIndicator={false}>
 
         <WhitePart w={w} h={h}>
