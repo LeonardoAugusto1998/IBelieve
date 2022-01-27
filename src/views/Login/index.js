@@ -80,7 +80,10 @@ export default function Login({ navigation }){
             } else {
                 const jsonValue = JSON.stringify(result.data)
                 await AsyncStorage.setItem('@user', jsonValue)
-                navigation.navigate('Principal');
+                .then(() => {
+                    navigation.navigate('Principal', {ORIGEM: 'LOGIN'});
+                })
+                
             }
         })
 
@@ -92,12 +95,27 @@ export default function Login({ navigation }){
         async function ver_usuario(){
             try {
                 const value = await AsyncStorage.getItem('@user')
-                if(value === null) {
+                .then(async (info) => {
+                    if(value === null) {
                     console.log(value);
                 } else {
-                    navigation.navigate('Principal');
-                    console.log(value);
+                    let lista = []
+                     
+                    info.forEach((doc) => {
+                        lista.push({
+                            email: doc.data().email
+                        })
+                    })
+                    
+
+                    navigation.navigate('Principal', {email: lista.email});
+                    console.log(lista.email);
+
                 }
+                })
+
+                
+
             } catch(e) {
                 console.log('Houve um erro --> ' + e)
             }

@@ -25,8 +25,9 @@ import {
     Linha,
     ModalView
 } from './principalStyle';
+import api from '../../services/api';
 
-export default function Principal({ navigation }){
+export default function Principal({ navigation, route }){
 
 
     const w = Dimensions.get('window').width;
@@ -38,10 +39,12 @@ export default function Principal({ navigation }){
     const [digit, setDigit] = React.useState('');
 
     const [userDados, setUserDados] = React.useState({});
+    const [redeQtd, setRedeQtd] = React.useState();
 
 
     React.useEffect(() => {
 
+        buscar_dados();
 
         const backAction = () => {
           Alert.alert("Atenção", "Tem certeza que deseja sair?", [
@@ -65,16 +68,19 @@ export default function Principal({ navigation }){
         return () => backHandler.remove();
 
 
-        async function buscar_dados(){
-
-            const get_item = await AsyncStorage.getItem('@user')
-            setUserDados(JSON.parse(get_item));
-
-        };
-
-        buscar_dados();
-
       }, []);
+
+
+      async function buscar_dados(){
+
+        const dataRoute = route.params?.email
+        api.post('buscar', {email: dataRoute})
+        .then((info) =>{
+            let dados = JSON.parse(info);
+
+            console.log(JSON.stringify(info))
+        })
+    };
 
     React.useEffect(()=>{
         setLista(categorias);
@@ -149,11 +155,11 @@ export default function Principal({ navigation }){
                 <LogoImg source={Logo}/>
 
 
-                <LogoRede onPress={ () => {navigation.navigate('Rede')} }>
+                <LogoRede onPress={ () => {console.log(userDados); console.log(route.params?.ORIGEM)} }>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>
-                    <NumText>30 Pessoas</NumText>
+                    <NumText>{redeQtd} Pessoas</NumText>
                     <PeqText>na sua rede</PeqText>
                 </LogoRede>
 

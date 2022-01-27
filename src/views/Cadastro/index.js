@@ -25,8 +25,6 @@ import {
     AreaLine,
     ErrorText
 } from './cadastroStyle';
-import { interfaceExtends } from '@babel/types';
-import Axios from 'axios';
 
 export default function Cadastro({ navigation }){
 
@@ -147,7 +145,7 @@ export default function Cadastro({ navigation }){
         }
         await api.post('cadastrar', data )
         .then( async (result) => {
-            console.log(result.data)
+            const dados = result.data
             switch(result.data) {
                 case 'DEU_PROBLEMA': return null;
                 break;
@@ -161,16 +159,32 @@ export default function Cadastro({ navigation }){
                 case 'NAO_EXISTE_RECOMENDOU': Alert.alert('Autenticação', 'Email de recomendação não encontrado'); setLoading(false);
                 break;
 
-                default: async () =>{
-                    
-                    await AsyncStorage.setItem('@user', JSON.stringify(result.data))
-                    setLoading(false);
-                    navigation.navigate('Principal');
-
-                }
+                default: cadastrou(data, dados);
             }
         })
 
+    }
+
+
+    async function cadastrou(data, dados){
+        
+            console.log(data.email)
+            
+            try {
+
+                await AsyncStorage.setItem('@user', JSON.stringify(data))
+                console.log('Colocou com êxito');
+                setLoading(false);
+                navigation.navigate('Principal', {ORIGEM: 'CADASTRO', email: data.email});
+                
+            } catch (e) {
+
+                console.log('O erro ta aqui --> ' + e);
+                setLoading(false);
+
+            } 
+
+        
     }
 
 

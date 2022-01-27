@@ -67,81 +67,14 @@ app.post('/cadastrar', (req, res) => {
                                 db.query(SQL_INSERT, [nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel],
                                     (err, result) => {
                                         res.send(result);
-                                        console.log(result);
                                     })
                             }
-
                         })
                     }
-
                 })
             }
-
         }
-
     })
-
-
-    // const SQL_SEARCH_CPF = 'SELECT * FROM ibelieve.usuarios WHERE cpf = ?'
-    // db.query(SQL_SEARCH_CPF, cpf, (err, result2) => {
-
-    //     if(err) {
-
-    //         console.log('Teve um erro --> ' + err);
-    //         res.send(JSON.stringify('DEU_PROBLEMA'));
-    //         return;
-    
-    //     } else {
-
-    //         if (JSON.stringify(result2) !== '[]'){
-    //             res.send(JSON.stringify('CPF_EXISTE'));
-    //             return;
-    //         }
-
-    //     }
-
-    // })
-
-    
-    // const SQL_SEARCH_RECOMENDOU = 'SELECT * FROM ibelieve.usuarios WHERE recomendou = ?'
-    // db.query(SQL_SEARCH_RECOMENDOU, recomendou, (err, result3) => {
-
-    //     if(err) {
-
-    //         console.log('Teve um erro --> ' + err);
-    //         res.send(JSON.stringify('DEU_PROBLEMA'));
-    //         return;
-    
-    //     } else {
-
-    //         if (JSON.stringify(result3) !== '[]'){
-    //             res.send(JSON.stringify('NAO_EXISTE_RECOMENDOU'));
-    //             return;
-    //         }
-
-    //     }
-
-    // })
-
-
-
-    // const SQL_INSERT = 'INSERT INTO ibelieve.usuarios (nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel) VALUES (?,?,?,?,?,?,?,?,?)'
-    // db.query(SQL_INSERT, [nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel], (err, result) => {
-
-    //     if(err) {
-
-    //         console.log('Teve um erro --> ' + err);
-    //         res.send(JSON.stringify('DEU_PROBLEMA'))
-    
-    //     } else {
-    
-    //        res.send(result);
-    //        console.log('Cadastrou com Sucesso !')
-    
-    //         }
-
-    // })
-
 })
 
 
@@ -165,13 +98,29 @@ app.post('/login', (req, res) => {
             } else {
                 res.send(result);
             }
-    
-            }
-        
+        }
+    })
+})
+
+
+
+app.post('/buscar', (req, res) => {
+
+    email = req.body.email;
+    const SQL_SELECT_REDES = 'SELECT * FROM ibelieve.usuarios WHERE recomendou = ?';
+
+    db.query(SQL_SELECT_REDES, email, (err, result) => {
+        if(err){
+            console.log('Erro na busca das redes ' + err);
+        } else {
+            res.send(result);
+            console.log(result);
+        }
     })
 
-
 })
+
+
 
 
 
