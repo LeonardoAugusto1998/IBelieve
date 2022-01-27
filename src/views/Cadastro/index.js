@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Dimensions, ScrollView, StatusBar, Image, Text} from 'react-native';
+import { Dimensions, ScrollView, StatusBar, Alert, ActivityIndicator} from 'react-native';
 import backgroundImage from '../../assets/background.png';
 import logo from '../../assets/logo_small.png';
 import NascIcon from '../../assets/date.svg';
@@ -65,8 +65,12 @@ export default function Cadastro({ navigation }){
     const [senha, setSenha] = React.useState('');
     const [recomendou, setRecomendou] = React.useState('');
 
+    const [loading, setLoading] = React.useState(false);
+
 
     async function cadastrar() {
+
+        setLoading(true);
         
         if(nome === '') {
             setBorderNome('#EC391D');
@@ -143,25 +147,25 @@ export default function Cadastro({ navigation }){
         }
         await api.post('cadastrar', data )
         .then( async (result) => {
+            console.log(result.data)
             switch(result.data) {
                 case 'DEU_PROBLEMA': return null;
                 break;
 
-                case 'CPF_EXISTE' : console.log('CPF já cadastrado');
+                case 'CPF_EXISTE' : Alert.alert('Autenticação', 'CPF já cadastrado'); setLoading(false);
                 break;
 
-                case 'EMAIL_EXISTE': console.log('Email já Cadastrado');
+                case 'EMAIL_EXISTE': Alert.alert('Autenticação', 'Email já cadastrado'); setLoading(false);
                 break;
 
-                case 'NAO_EXISTE_RECOMENDOU': console.log('Não existe recomendou');
+                case 'NAO_EXISTE_RECOMENDOU': Alert.alert('Autenticação', 'Email de recomendação não encontrado'); setLoading(false);
                 break;
 
                 default: async () =>{
                     
                     await AsyncStorage.setItem('@user', JSON.stringify(result.data))
-                    .then(() => {
-                        navigation.navigate('Principal');
-                    });
+                    setLoading(false);
+                    navigation.navigate('Principal');
 
                 }
             }
@@ -373,7 +377,7 @@ export default function Cadastro({ navigation }){
               ? '#FAA411'
               : '#DFC411'
           }}>
-                    <TextButton>Avançar</TextButton>
+                    <TextButton>{loading ? <ActivityIndicator size="large"/> : 'Acessar'}</TextButton>
                 </AcessarButton>
 
                 <Linha/>

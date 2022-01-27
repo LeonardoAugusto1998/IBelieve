@@ -31,19 +31,52 @@ app.post('/cadastrar', (req, res) => {
     nivel = 1
 
     const SQL_SEARCH_EMAIL = 'SELECT * FROM ibelieve.usuarios WHERE email = ?'
+    const SQL_SEARCH_CPF = 'SELECT * FROM ibelieve.usuarios WHERE cpf = ?'
+    const SQL_SEARCH_RECOMENDOU = 'SELECT * FROM ibelieve.usuarios WHERE recomendou = ?'
+    const SQL_INSERT = 'INSERT INTO ibelieve.usuarios (nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel) VALUES (?,?,?,?,?,?,?,?,?)'
     db.query(SQL_SEARCH_EMAIL, email, (err, result1) => {
 
         if(err) {
 
             console.log('Teve um erro --> ' + err);
             res.send(JSON.stringify('DEU_PROBLEMA'));
-            return
+            return null;
     
         } else {
+
             if (JSON.stringify(result1) !== '[]'){
                 res.send(JSON.stringify('EMAIL_EXISTE'));
-                return
+                return null;
+            } else {
+
+                db.query(SQL_SEARCH_CPF, cpf, (err, result2) => {
+
+                    if(JSON.stringify(result2) !== '[]'){
+
+                        res.send(JSON.stringify('CPF_EXISTE'));
+                        return null;
+
+                    } else {
+
+                        db.query(SQL_SEARCH_RECOMENDOU, recomendou, (err, result3) => {
+
+                            if(JSON.stringify(result3) === '[]'){
+                                res.send(JSON.stringify('NAO_EXISTE_RECOMENDOU'));
+                                return null;
+                            } else {
+                                db.query(SQL_INSERT, [nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel],
+                                    (err, result) => {
+                                        res.send(result);
+                                        console.log(result);
+                                    })
+                            }
+
+                        })
+                    }
+
+                })
             }
+
         }
 
     })
