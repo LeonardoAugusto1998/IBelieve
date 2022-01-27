@@ -5,6 +5,8 @@ import logo from '../../assets/logo_small.png';
 import NascIcon from '../../assets/date.svg';
 import OlhoAberto from '../../assets/show_password.svg';
 import OlhoFechado from '../../assets/hide_password.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../../services/api';
 import { 
     BackImage, 
     WhitePart,
@@ -139,10 +141,30 @@ export default function Cadastro({ navigation }){
             senha: senha,
             recomendou: recomendou.toLocaleLowerCase()
         }
-        await axios.post('http://192.168.0.116:3001/cadastrar', data )
-        .then((result) => {
-            console.log(result.config.data);
-            
+        await api.post('cadastrar', data )
+        .then( async (result) => {
+            switch(result.data) {
+                case 'DEU_PROBLEMA': return null;
+                break;
+
+                case 'CPF_EXISTE' : console.log('CPF já cadastrado');
+                break;
+
+                case 'EMAIL_EXISTE': console.log('Email já Cadastrado');
+                break;
+
+                case 'NAO_EXISTE_RECOMENDOU': console.log('Não existe recomendou');
+                break;
+
+                default: async () =>{
+                    
+                    await AsyncStorage.setItem('@user', JSON.stringify(result.data))
+                    .then(() => {
+                        navigation.navigate('Principal');
+                    });
+
+                }
+            }
         })
 
     }
