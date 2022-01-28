@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Dimensions, ScrollView, Text, StatusBar, Alert} from 'react-native';
+import { View, Dimensions, ScrollView, ActivityIndicator, StatusBar, Alert} from 'react-native';
 import backgroundImage from '../../assets/background.png';
 import logo_small from '../../assets/logo_small.png';
 import OlhoAberto from '../../assets/show_password.svg';
@@ -40,10 +40,17 @@ export default function Login({ navigation }){
     const [errorLogin, setErrorLogin] = React.useState(false);
     const [errorSenha, setErrorSenha] = React.useState(false);
 
-    const[login, setLogin] = React.useState('');
-    const[senha, setSenha] = React.useState('');
+    const [login, setLogin] = React.useState('');
+    const [senha, setSenha] = React.useState('');
+
+    const [loading, setLoading] = React.useState(false);
 
     async function acessar(){
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 15000);
+
         if(login === '') {
             setBorderColor1('#EC391D');
             setErrorLogin(true);
@@ -67,21 +74,25 @@ export default function Login({ navigation }){
         }
 
         let data = {
-
             login: login.toLocaleLowerCase(),
             senha: senha
-
         }
 
         await api.post('login', data )
         .then( async (result) => {
+
             if ( result.data === null ) {
-                Alert.alert('Autenticação', 'Login ou Senha incorretos !')
+                setLoading(false);
+                Alert.alert('Autenticação', 'Login ou Senha incorretos !');
+
             } else {
-                const jsonValue = JSON.stringify(result.data)
-                await AsyncStorage.setItem('@user', jsonValue)
+
+                setLoading(false);
+                const jsonValueStr = JSON.stringify(result.data);
+                const jsonValue = JSON.parse(result.data);
+                await AsyncStorage.setItem('@user', jsonValueStr)
                 .then(() => {
-                    navigation.navigate('Principal', {ORIGEM: 'LOGIN'});
+                    navigation.navigate('Principal', {email: jsonValue.email});
                 })
                 
             }
@@ -99,17 +110,16 @@ export default function Login({ navigation }){
                     if(value === null) {
                     console.log(value);
                 } else {
-                    let lista = []
-                     
-                    info.forEach((doc) => {
-                        lista.push({
-                            email: doc.data().email
-                        })
+                    let dados = JSON.parse(info);
+                    let dadosStr = JSON.stringify(info);
+                    await AsyncStorage.setItem('@user', dadosStr)
+                    .then(() => {
+                        navigation.navigate('Principal', {email: dados.email});
+                        console.log(dados.email);
                     })
-                    
-
-                    navigation.navigate('Principal', {email: lista.email});
-                    console.log(lista.email);
+                    .catch((err) => {
+                        console.log('Erro qnd login ' + err);
+                    })
 
                 }
                 })
@@ -190,7 +200,7 @@ export default function Login({ navigation }){
               ? '#FAA411'
               : '#DFC411'
           }}>
-                    <TextButton>Acessar sua conta</TextButton>
+                    <TextButton>{loading ? <ActivityIndicator size="large"/> : 'Acessar sua Conta'}</TextButton>
                 </AcessarButton>
 
 

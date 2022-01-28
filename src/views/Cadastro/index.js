@@ -69,6 +69,9 @@ export default function Cadastro({ navigation }){
     async function cadastrar() {
 
         setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 15000);
         
         if(nome === '') {
             setBorderNome('#EC391D');
