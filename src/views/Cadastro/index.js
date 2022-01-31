@@ -66,12 +66,13 @@ export default function Cadastro({ navigation }){
     const [loading, setLoading] = React.useState(false);
 
 
+
     async function cadastrar() {
 
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-        }, 15000);
+        }, 20000);
         
         if(nome === '') {
             setBorderNome('#EC391D');
@@ -171,21 +172,55 @@ export default function Cadastro({ navigation }){
 
     async function cadastrou(data, dados){
         
-            console.log(data.email)
+            // console.log(data.email);
+            let dataJSON = JSON.stringify(dados)
+            let usuario = {
+                nome: data.nome,
+                email: data.email,
+                telefone: data.telefone,
+                cpf: data.cpf,
+                nascimento: data.nascimento,
+                senha: data.senha,
+                recomendou: data.recomendou
+            }
+            
             
             try {
 
-                await AsyncStorage.setItem('@user', JSON.stringify(data))
-                console.log('Colocou com êxito');
-                setLoading(false);
-                navigation.navigate('Principal', {ORIGEM: 'CADASTRO', email: data.email});
+                await AsyncStorage.setItem('@user', JSON.stringify(usuario))
+
+            .then( async () => {
+
+                console.log('Cadastro com sucesso o usuario');
+
+                    await AsyncStorage.setItem('@id', dataJSON)
+
+                    .then( () => {
+
+                        console.log('Cadastro com sucesso o id');
+
+                        navigation.navigate('Principal', {email: usuario.email})
+
+                    })
+                    .catch( (err) => {
+                        console.log('Esse foi o erro no id' + err);
+                    } )
+
+
+            })
+            .catch( (err) => {
+                console.log('Esse foi o erro no usuario' + err);
+            } )
+
                 
+
             } catch (e) {
 
-                console.log('O erro ta aqui --> ' + e);
-                setLoading(false);
+                console.log('Error --> ' + e);
 
-            } 
+            }
+
+
 
         
     }

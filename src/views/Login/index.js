@@ -49,7 +49,7 @@ export default function Login({ navigation }){
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-        }, 15000);
+        }, 20000);
 
         if(login === '') {
             setBorderColor1('#EC391D');
@@ -105,27 +105,11 @@ export default function Login({ navigation }){
 
         async function ver_usuario(){
             try {
-                const value = await AsyncStorage.getItem('@user')
-                .then(async (info) => {
-                    if(value === null) {
-                    console.log(value);
-                } else {
-                    let dados = JSON.parse(info);
-                    let dadosStr = JSON.stringify(info);
-                    await AsyncStorage.setItem('@user', dadosStr)
-                    .then(() => {
-                        navigation.navigate('Principal', {email: dados.email});
-                        console.log(dados.email);
-                    })
-                    .catch((err) => {
-                        console.log('Erro qnd login ' + err);
-                    })
-
-                }
+                const response = AsyncStorage.getItem('@user')
+                .then( () => {
+                    let dado = JSON.stringify(response)
+                    console.log('Esse é o response --> ' + dado)
                 })
-
-                
-
             } catch(e) {
                 console.log('Houve um erro --> ' + e)
             }

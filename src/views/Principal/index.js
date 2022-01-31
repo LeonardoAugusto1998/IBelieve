@@ -38,8 +38,9 @@ export default function Principal({ navigation, route }){
 
     const [digit, setDigit] = React.useState('');
 
-    const [userDados, setUserDados] = React.useState({});
-    const [redeQtd, setRedeQtd] = React.useState();
+    const [userDados, setUserDados] = React.useState([]);
+    const [userData, setUserData] = React.useState('');
+    const [userId, setUserId] = React.useState('');
 
 
     React.useEffect(() => {
@@ -54,7 +55,8 @@ export default function Principal({ navigation, route }){
               style: "cancel"
             },
             { text: "Sair", onPress: async () => {
-                BackHandler.exitApp(); await AsyncStorage.clear();
+                BackHandler.exitApp(); 
+                await AsyncStorage.clear();
             } }
           ]);
           return true;
@@ -73,10 +75,28 @@ export default function Principal({ navigation, route }){
 
       async function buscar_dados(){
 
+        await AsyncStorage.getItem('@user')
+        .then((doc) => {
+            console.log(doc);
+            let data = JSON.parse(doc);
+            setUserData(data)
+        })
+
+        await AsyncStorage.getItem('@id')
+        .then((doc) => {
+            console.log(doc);
+            let data = JSON.parse(doc);
+            setUserId(data.insertId)
+        })
+
+
+
         const dataRoute = route.params?.email
         api.post('buscar', {email: dataRoute})
         .then((info) =>{
+
             let dados = JSON.parse(info);
+            setUserDados(dados);
 
             console.log(JSON.stringify(info))
         })
@@ -155,11 +175,11 @@ export default function Principal({ navigation, route }){
                 <LogoImg source={Logo}/>
 
 
-                <LogoRede onPress={ () => {console.log(userDados); console.log(route.params?.ORIGEM)} }>
+                <LogoRede onPress={ () => {console.log(userData);console.log(userId); console.log(userDados.lenght)} }>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>
-                    <NumText>{redeQtd} Pessoas</NumText>
+                    <NumText>{userDados.lenght} Pessoas</NumText>
                     <PeqText>na sua rede</PeqText>
                 </LogoRede>
 

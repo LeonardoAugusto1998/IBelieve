@@ -80,18 +80,6 @@ export default function Rede({ navigation }){
 
     }
 
-    React.useEffect(() => {
-
-        function backAction(){
-            navigation.navigate('Principal');
-        }
-
-        const backHandler = BackHandler.addEventListener(
-            "hardwareBackPress",
-            backAction
-          );
-
-    }, [])
 
     return(
 
