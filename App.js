@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import AuthProvider from './src/services/context';
 
 
 import Login from './src/views/Login';
@@ -16,6 +17,7 @@ export default function App(){
   const Stack = createStackNavigator();
 
   return(
+  <AuthProvider>            
     <NavigationContainer>
       <Stack.Navigator
       initialRouteName='Login'
@@ -30,6 +32,7 @@ export default function App(){
       </Stack.Navigator>
 
     </NavigationContainer>
+  </AuthProvider>
   );
 }
 

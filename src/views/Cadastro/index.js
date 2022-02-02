@@ -173,46 +173,18 @@ export default function Cadastro({ navigation }){
     async function cadastrou(data, dados){
         
             // console.log(data.email);
-            let dataJSON = JSON.stringify(dados)
-            let usuario = {
-                nome: data.nome,
-                email: data.email,
-                telefone: data.telefone,
-                cpf: data.cpf,
-                nascimento: data.nascimento,
-                senha: data.senha,
-                recomendou: data.recomendou
-            }
-            
+            let dataJSON = JSON.stringify(dados); 
             
             try {
 
-                await AsyncStorage.setItem('@user', JSON.stringify(usuario))
-
-            .then( async () => {
-
-                console.log('Cadastro com sucesso o usuario');
-
-                    await AsyncStorage.setItem('@id', dataJSON)
-
-                    .then( () => {
-
-                        console.log('Cadastro com sucesso o id');
-
-                        navigation.navigate('Principal', {email: usuario.email})
-
-                    })
-                    .catch( (err) => {
-                        console.log('Esse foi o erro no id' + err);
-                    } )
-
-
-            })
-            .catch( (err) => {
-                console.log('Esse foi o erro no usuario' + err);
-            } )
-
-                
+                await AsyncStorage.setItem('@user', dataJSON)
+                .then( () => {
+                    navigation.navigate('Principal', {email: data.email});
+                    console.log('cadastrou com Sucesso !')
+                })
+                .catch( (err) => {
+                    console.log('Deu problema no cadastro ' + err)
+                })
 
             } catch (e) {
 

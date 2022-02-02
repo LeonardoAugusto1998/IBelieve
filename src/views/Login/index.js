@@ -6,6 +6,7 @@ import OlhoAberto from '../../assets/show_password.svg';
 import OlhoFechado from '../../assets/hide_password.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
+import { AuthContext } from '../../services/context/context'
 import { 
     BackImage, 
     WhitePart, 
@@ -44,6 +45,8 @@ export default function Login({ navigation }){
     const [senha, setSenha] = React.useState('');
 
     const [loading, setLoading] = React.useState(false);
+
+    const {user, setUser} = React.useContext(AuthContext);
 
     async function acessar(){
         setLoading(true);
@@ -89,10 +92,13 @@ export default function Login({ navigation }){
 
                 setLoading(false);
                 const jsonValueStr = JSON.stringify(result.data);
-                const jsonValue = JSON.parse(result.data);
                 await AsyncStorage.setItem('@user', jsonValueStr)
                 .then(() => {
-                    navigation.navigate('Principal', {email: jsonValue.email});
+                    console.log( 'email no login --> ' + login.toLocaleLowerCase());
+                    navigation.navigate('Principal', {email: login.toLocaleLowerCase()});
+                })
+                .catch((err) => {
+                    console.log('Deu erro no login ' + err);
                 })
                 
             }
@@ -105,10 +111,22 @@ export default function Login({ navigation }){
 
         async function ver_usuario(){
             try {
-                const response = AsyncStorage.getItem('@user')
-                .then( () => {
-                    let dado = JSON.stringify(response)
-                    console.log('Esse é o response --> ' + dado)
+                await AsyncStorage.getItem('@user')
+                .then( async (response) => {
+                    
+                    let asyncData = JSON.stringify(response);
+
+                    if(asyncData === 'null'){
+
+                        console.log('Sem dados');
+
+                    } else {
+
+                            
+
+                    }
+
+
                 })
             } catch(e) {
                 console.log('Houve um erro --> ' + e)

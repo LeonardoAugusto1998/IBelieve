@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Modal, StatusBar, Dimensions, BackHandler} from 'react-native';
+import { View, Modal, StatusBar, Dimensions} from 'react-native';
 import BackArrow from '../../assets/arrow.svg';
 import logo from '../../assets/logonew.png';
 import IconGroup from '../../assets/group.svg';
@@ -7,6 +7,8 @@ import Camera from '../../assets/camera.svg';
 import { seguidores, Seguidores } from '../../components/Seguidores/seguidores';
 import avatar from '../../assets/avatar.jpg';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../../services/api';
 
 import { 
     Container,
@@ -31,16 +33,37 @@ import {
 
 } from './redeStyle';
 
-export default function Rede({ navigation }){
+export default function Rede({ route }){
 
 
     const w = Dimensions.get('window').width;
 
-    const [seguidoresLista, setSeguidoresLista] = React.useState(seguidores);
+    const [seguidoresLista, setSeguidoresLista] = React.useState([]);
     const [image, setImage] = React.useState(null);
     const [modalVisible, setModalVisible] = React.useState(false);
 
+    const [userDados, setUserDados] = React.useState({});
+    const [userRede, setUserRede] = React.useState([]);
+
     async function handleChangePhotoCamera(){
+
+
+
+        React.useEffect(()=>{
+
+            buscarSeguidores();
+
+        }, [])
+
+        async function buscarSeguidores(){
+
+            console.log(route.params?.email);
+
+            await AsyncStorage.getItem('@user')
+            .then( (info) => {
+                console.log(JSON.stringify(info));
+            })
+        }
         
         
         setModalVisible(false);
@@ -90,7 +113,7 @@ export default function Rede({ navigation }){
 
             <Cabecalho>
 
-                <VoltarView onPress={ () => {navigation.goBack()} }>
+                <VoltarView onPress={ () => {console.log(userDados)} }>
                     <VoltarText><BackArrow width={10} eight={10}/> Voltar</VoltarText>
                 </VoltarView>
             
@@ -123,8 +146,8 @@ export default function Rede({ navigation }){
                     </GrupoView>
                     
                     
-                    <Nome>Dwane The Rock</Nome>
-                    <TextoDeBaixo>{seguidoresLista.length} Pessoas convidadas</TextoDeBaixo>
+                    <Nome>{userDados.nome}</Nome>
+                    <TextoDeBaixo>{userRede.length} Pessoas convidadas</TextoDeBaixo>
                 </NomesLogo>
 
             </LogoView>
@@ -133,7 +156,7 @@ export default function Rede({ navigation }){
 
 
             <SeguidoresLista
-            data={seguidoresLista}
+            data={userRede}
             keyExtractor={ (item) => {item.id} }
             renderItem={ ( {item} ) => {
                 return(

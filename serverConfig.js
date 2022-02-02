@@ -32,7 +32,7 @@ app.post('/cadastrar', (req, res) => {
 
     const SQL_SEARCH_EMAIL = 'SELECT * FROM ibelieve.usuarios WHERE email = ?'
     const SQL_SEARCH_CPF = 'SELECT * FROM ibelieve.usuarios WHERE cpf = ?'
-    const SQL_SEARCH_RECOMENDOU = 'SELECT * FROM ibelieve.usuarios WHERE recomendou = ?'
+    const SQL_SEARCH_RECOMENDOU = 'SELECT * FROM ibelieve.usuarios WHERE email = ?'
     const SQL_INSERT = 'INSERT INTO ibelieve.usuarios (nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel) VALUES (?,?,?,?,?,?,?,?,?)'
     db.query(SQL_SEARCH_EMAIL, email, (err, result1) => {
 
@@ -66,7 +66,12 @@ app.post('/cadastrar', (req, res) => {
                             } else {
                                 db.query(SQL_INSERT, [nome, email, telefone, cpf, nascimento, senha, recomendou, fotoUrl, nivel],
                                     (err, result) => {
-                                        res.send(result);
+
+                                        db.query(SQL_SEARCH_CPF, cpf, (err, result4) => {
+                                            res.send(JSON.stringify(result4))
+                                        })
+                                        
+
                                     })
                             }
                         })
@@ -112,6 +117,22 @@ app.post('/buscar', (req, res) => {
     db.query(SQL_SELECT_REDES, email, (err, result) => {
         if(err){
             console.log('Erro na busca das redes ' + err);
+        } else {
+            res.send(result);
+            console.log(result);
+        }
+    })
+
+})
+
+app.post('/buscarRede', (req, res) => {
+
+    email = req.body.email;
+    const SQL_SELECT_REDES = 'SELECT * FROM ibelieve.usuarios WHERE recomendou = ?';
+
+    db.query(SQL_SELECT_REDES, email, (err, result) => {
+        if(err){
+            console.log('Erro na busca das redes na pag Rede ' + err);
         } else {
             res.send(result);
             console.log(result);

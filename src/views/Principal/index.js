@@ -82,23 +82,17 @@ export default function Principal({ navigation, route }){
             setUserData(data)
         })
 
-        await AsyncStorage.getItem('@id')
-        .then((doc) => {
-            console.log(doc);
-            let data = JSON.parse(doc);
-            setUserId(data.insertId)
-        })
-
-
-
         const dataRoute = route.params?.email
-        api.post('buscar', {email: dataRoute})
-        .then((info) =>{
+        let email = {email: dataRoute}
+        const response = api.post('buscar', email)
+        .then(() => {
 
-            let dados = JSON.parse(info);
-            setUserDados(dados);
+            let jsonDados = JSON.stringify(response);
+            let jsonDados2 = JSON.parse(jsonDados);
+            setUserDados(jsonDados2);
 
-            console.log(JSON.stringify(info))
+            console.log('esse daqui era pra ser o email --> ' + route.params?.email);
+
         })
     };
 
@@ -175,11 +169,11 @@ export default function Principal({ navigation, route }){
                 <LogoImg source={Logo}/>
 
 
-                <LogoRede onPress={ () => {console.log(userData);console.log(userId); console.log(userDados.lenght)} }>
+                <LogoRede onPress={ () => {console.log(route.params?.email)}}>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>
-                    <NumText>{userDados.lenght} Pessoas</NumText>
+                    <NumText>{userDados.length} Pessoas</NumText>
                     <PeqText>na sua rede</PeqText>
                 </LogoRede>
 
