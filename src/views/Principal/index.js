@@ -39,8 +39,7 @@ export default function Principal({ navigation, route }){
     const [digit, setDigit] = React.useState('');
 
     const [userDados, setUserDados] = React.useState([]);
-    const [userData, setUserData] = React.useState('');
-    const [userId, setUserId] = React.useState('');
+
 
 
     React.useEffect(() => {
@@ -73,28 +72,32 @@ export default function Principal({ navigation, route }){
       }, []);
 
 
+
+
       async function buscar_dados(){
 
-        await AsyncStorage.getItem('@user')
-        .then((doc) => {
-            console.log(doc);
-            let data = JSON.parse(doc);
-            setUserData(data)
+        let dado = {email: route.params?.email}
+        api.post('buscar', dado)
+        .then((response) => {
+
+            
+            let dados2 = JSON.stringify(response);
+            let dados = JSON.parse(dados2);
+            setUserDados(dados.data);
+
+            console.log('Deu Certo');
+            
+        })
+        .catch((err) => {
+            console.log('Deu erro aqui na busca do num de rede -->' + err)
         })
 
-        const dataRoute = route.params?.email
-        let email = {email: dataRoute}
-        const response = api.post('buscar', email)
-        .then(() => {
-
-            let jsonDados = JSON.stringify(response);
-            let jsonDados2 = JSON.parse(jsonDados);
-            setUserDados(jsonDados2);
-
-            console.log('esse daqui era pra ser o email --> ' + route.params?.email);
-
-        })
     };
+
+
+
+
+
 
     React.useEffect(()=>{
         setLista(categorias);
@@ -103,6 +106,9 @@ export default function Principal({ navigation, route }){
         lista,
         estabelecimentos
     ]);
+
+
+
 
 
     React.useEffect( () => {
@@ -122,6 +128,8 @@ export default function Principal({ navigation, route }){
         }
 
     }, [digit]);
+
+
 
     
 
@@ -169,7 +177,7 @@ export default function Principal({ navigation, route }){
                 <LogoImg source={Logo}/>
 
 
-                <LogoRede onPress={ () => {console.log(route.params?.email)}}>
+                <LogoRede onPress={ () => {navigation.navigate('Rede', {email: route.params?.email})}}>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>

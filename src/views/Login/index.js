@@ -6,7 +6,6 @@ import OlhoAberto from '../../assets/show_password.svg';
 import OlhoFechado from '../../assets/hide_password.svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
-import { AuthContext } from '../../services/context/context'
 import { 
     BackImage, 
     WhitePart, 
@@ -46,7 +45,7 @@ export default function Login({ navigation }){
 
     const [loading, setLoading] = React.useState(false);
 
-    const {user, setUser} = React.useContext(AuthContext);
+    
 
     async function acessar(){
         setLoading(true);
@@ -91,11 +90,13 @@ export default function Login({ navigation }){
             } else {
 
                 setLoading(false);
-                const jsonValueStr = JSON.stringify(result.data);
-                await AsyncStorage.setItem('@user', jsonValueStr)
-                .then(() => {
+                let emailJson = JSON.stringify(login.toLocaleLowerCase());
+                await AsyncStorage.setItem('@user', emailJson)
+                .then( async () => {
+
                     console.log( 'email no login --> ' + login.toLocaleLowerCase());
                     navigation.navigate('Principal', {email: login.toLocaleLowerCase()});
+                    
                 })
                 .catch((err) => {
                     console.log('Deu erro no login ' + err);
@@ -119,10 +120,13 @@ export default function Login({ navigation }){
                     if(asyncData === 'null'){
 
                         console.log('Sem dados');
+                        console.log(asyncData);
 
                     } else {
+                        
+                        let emailJson = JSON.parse(response)
 
-                            
+                        navigation.navigate('Principal', {email: emailJson})
 
                     }
 

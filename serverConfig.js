@@ -125,6 +125,10 @@ app.post('/buscar', (req, res) => {
 
 })
 
+
+
+
+
 app.post('/buscarRede', (req, res) => {
 
     email = req.body.email;
@@ -142,6 +146,15 @@ app.post('/buscarRede', (req, res) => {
 })
 
 
+
+app.post('/BuscarDadosUser', (req, res) => {
+    email = req.body.email;
+    const SQL_SEARCH_USER = 'SELECT * FROM ibelieve.usuarios WHERE email = ?'
+
+    db.query(SQL_SEARCH_USER, email, (err, result_user) => {
+        res.send(result_user)
+    })
+})
 
 
 

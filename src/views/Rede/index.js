@@ -4,7 +4,7 @@ import BackArrow from '../../assets/arrow.svg';
 import logo from '../../assets/logonew.png';
 import IconGroup from '../../assets/group.svg';
 import Camera from '../../assets/camera.svg';
-import { seguidores, Seguidores } from '../../components/Seguidores/seguidores';
+import { Seguidores } from '../../components/Seguidores/seguidores';
 import avatar from '../../assets/avatar.jpg';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -33,7 +33,7 @@ import {
 
 } from './redeStyle';
 
-export default function Rede({ route }){
+export default function Rede({ navigation, route }){
 
 
     const w = Dimensions.get('window').width;
@@ -46,26 +46,7 @@ export default function Rede({ route }){
     const [userRede, setUserRede] = React.useState([]);
 
     async function handleChangePhotoCamera(){
-
-
-
-        React.useEffect(()=>{
-
-            buscarSeguidores();
-
-        }, [])
-
-        async function buscarSeguidores(){
-
-            console.log(route.params?.email);
-
-            await AsyncStorage.getItem('@user')
-            .then( (info) => {
-                console.log(JSON.stringify(info));
-            })
-        }
-        
-        
+               
         setModalVisible(false);
         const options = {
             mediaType: 'photo',
@@ -100,7 +81,25 @@ export default function Rede({ route }){
             
         }))
 
+    }
 
+
+
+    React.useEffect(()=>{
+
+        buscarSeguidores();
+
+    }, [])
+
+    async function buscarDadosUser(){
+
+        let data = {email: route.params?.email};
+        await api.post('BuscarDadosUser', data)
+        .then( (result) => {
+            let dados = JSON.parse(result);
+            setUserDados(dados.data)
+        })
+  
     }
 
 
@@ -113,7 +112,7 @@ export default function Rede({ route }){
 
             <Cabecalho>
 
-                <VoltarView onPress={ () => {console.log(userDados)} }>
+                <VoltarView onPress={ () => {navigation.goBack()} }>
                     <VoltarText><BackArrow width={10} eight={10}/> Voltar</VoltarText>
                 </VoltarView>
             
