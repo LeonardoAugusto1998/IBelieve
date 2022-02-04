@@ -148,11 +148,17 @@ app.post('/buscarRede', (req, res) => {
 
 
 app.post('/BuscarDadosUser', (req, res) => {
-    email = req.body.email;
-    const SQL_SEARCH_USER = 'SELECT * FROM ibelieve.usuarios WHERE email = ?'
 
-    db.query(SQL_SEARCH_USER, email, (err, result_user) => {
-        res.send(result_user)
+    email = req.body.email;
+    const SQL_SEARCH_USER = 'SELECT nome, fotoUrl FROM ibelieve.usuarios WHERE email = ?'
+
+    db.query(SQL_SEARCH_USER, email, (err, result) => {
+        if(err){
+            console.log('Erro para buscar dados do user -->' + err);
+        } else {
+            res.send(JSON.stringify(result));
+            console.log('Meus dados --> ' + JSON.stringify(result));
+        }
     })
 })
 

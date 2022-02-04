@@ -173,13 +173,13 @@ export default function Cadastro({ navigation }){
     async function cadastrou(data, dados){
         
             // console.log(data.email);
-            let dataJSON = JSON.stringify(dados); 
+            let dataJSON = JSON.stringify(data.email); 
             
             try {
 
                 await AsyncStorage.setItem('@user', dataJSON)
                 .then( () => {
-                    navigation.navigate('Principal', {email: data.email});
+                    navigation.navigate('Principal');
                     console.log('cadastrou com Sucesso !')
                 })
                 .catch( (err) => {

@@ -76,21 +76,27 @@ export default function Principal({ navigation, route }){
 
       async function buscar_dados(){
 
-        let dado = {email: route.params?.email}
-        api.post('buscar', dado)
-        .then((response) => {
+        await AsyncStorage.getItem('@user')
+        .then( async (resp) => {
+            let data = { email: JSON.parse(resp)}
 
-            
-            let dados2 = JSON.stringify(response);
-            let dados = JSON.parse(dados2);
-            setUserDados(dados.data);
+            await api.post('buscar', data)
+            .then((response) => {
 
-            console.log('Deu Certo');
-            
+                
+                let dados2 = JSON.stringify(response);
+                let dados = JSON.parse(dados2);
+                setUserDados(dados.data);
+
+                console.log('Deu Certo');
+                
+            })
+            .catch((err) => {
+                console.log('Deu erro aqui na busca do num de rede -->' + err)
+            })
+                
         })
-        .catch((err) => {
-            console.log('Deu erro aqui na busca do num de rede -->' + err)
-        })
+        
 
     };
 
@@ -177,7 +183,7 @@ export default function Principal({ navigation, route }){
                 <LogoImg source={Logo}/>
 
 
-                <LogoRede onPress={ () => {navigation.navigate('Rede', {email: route.params?.email})}}>
+                <LogoRede onPress={ () => {navigation.navigate('Rede')}}>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>

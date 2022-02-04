@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Modal, StatusBar, Dimensions} from 'react-native';
+import { View, Modal, StatusBar, Dimensions, Alert} from 'react-native';
 import BackArrow from '../../assets/arrow.svg';
 import logo from '../../assets/logonew.png';
 import IconGroup from '../../assets/group.svg';
@@ -39,11 +39,10 @@ export default function Rede({ navigation, route }){
     const w = Dimensions.get('window').width;
 
     const [seguidoresLista, setSeguidoresLista] = React.useState([]);
-    const [image, setImage] = React.useState(null);
+    const [image, setImage] = React.useState(userDados && userDados[0].fotoUrl);
     const [modalVisible, setModalVisible] = React.useState(false);
+    const [userDados, setUserDados] = React.useState([{nome: '', fotoUrl: ''}]);
 
-    const [userDados, setUserDados] = React.useState({});
-    const [userRede, setUserRede] = React.useState([]);
 
     async function handleChangePhotoCamera(){
                
@@ -58,9 +57,16 @@ export default function Rede({ navigation, route }){
 
         }
 
-        const PickerCamera = await launchCamera(options)
+        await launchCamera(options)
         .then( (info=>{
-            setImage(info.assets[0].uri);
+            
+            if(info.errorCode){
+                Alert.alert('Alerta', 'Ta faltando permissao')
+            } else {
+                setImage(info.assets[0].uri);
+                console.log(info.assets[0].uri);
+            }
+
         }))
 
 
@@ -75,9 +81,10 @@ export default function Rede({ navigation, route }){
             maxHeight: 90,
         }
 
-        const PickerLibrary = await launchImageLibrary(options)
+        await launchImageLibrary(options)
         .then( (info=>{
             setImage(info.assets[0].uri);
+            console.log(info.assets[0].uri);
             
         }))
 
@@ -87,19 +94,66 @@ export default function Rede({ navigation, route }){
 
     React.useEffect(()=>{
 
-        buscarSeguidores();
+        buscarDadosUser();
+        buscarRede();
 
     }, [])
 
+
     async function buscarDadosUser(){
 
-        let data = {email: route.params?.email};
-        await api.post('BuscarDadosUser', data)
-        .then( (result) => {
-            let dados = JSON.parse(result);
-            setUserDados(dados.data)
+        await AsyncStorage.getItem('@user')
+        .then( async (response) => { 
+            let data = { email: JSON.parse(response)}
+
+            await api.post('BuscarDadosUser', data)
+                .then( (result) => {
+                    let dadosStr = JSON.stringify(result)
+                    let dados = JSON.parse(dadosStr);
+                    setUserDados(dados.data);
+                    setImage(userDados[0].fotoUrl);
+                    
+                })
+                .catch((err) => {
+                    console.log('Deu erro 1 ' + err)
+                })
         })
+        .catch((err) => {
+            console.log('deu erro 1.1 --> ' + err)
+        })
+        
   
+    }
+
+
+
+
+    async function buscarRede(){
+
+        await AsyncStorage.getItem('@user')
+        .then( async (response) => {
+            let data = { email: JSON.parse(response)};
+
+            await api.post('buscarRede', data)
+            .then( (result) => {
+
+                let dadosStr = JSON.stringify(result)
+                let dados = JSON.parse(dadosStr);
+                setSeguidoresLista(dados.data);
+                
+            })
+
+        })
+        .catch((err) => {
+            console.log('deu erro 1.2 --> ' + err)
+        })
+        
+    }
+
+
+    
+    function nome(index){
+        return userDados[0].nome.split(' ')[index];
     }
 
 
@@ -145,8 +199,8 @@ export default function Rede({ navigation, route }){
                     </GrupoView>
                     
                     
-                    <Nome>{userDados.nome}</Nome>
-                    <TextoDeBaixo>{userRede.length} Pessoas convidadas</TextoDeBaixo>
+                    <Nome>{nome(0)} {nome(1)}</Nome>
+                    <TextoDeBaixo>{seguidoresLista.length} Pessoas convidadas</TextoDeBaixo>
                 </NomesLogo>
 
             </LogoView>
@@ -155,7 +209,7 @@ export default function Rede({ navigation, route }){
 
 
             <SeguidoresLista
-            data={userRede}
+            data={seguidoresLista}
             keyExtractor={ (item) => {item.id} }
             renderItem={ ( {item} ) => {
                 return(

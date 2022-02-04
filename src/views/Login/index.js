@@ -95,7 +95,7 @@ export default function Login({ navigation }){
                 .then( async () => {
 
                     console.log( 'email no login --> ' + login.toLocaleLowerCase());
-                    navigation.navigate('Principal', {email: login.toLocaleLowerCase()});
+                    navigation.navigate('Principal');
                     
                 })
                 .catch((err) => {
@@ -123,10 +123,8 @@ export default function Login({ navigation }){
                         console.log(asyncData);
 
                     } else {
-                        
-                        let emailJson = JSON.parse(response)
 
-                        navigation.navigate('Principal', {email: emailJson})
+                        navigation.navigate('Principal')
 
                     }
 
