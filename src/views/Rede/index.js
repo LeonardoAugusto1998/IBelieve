@@ -232,9 +232,10 @@ export default function Rede({ navigation, route }){
             visible={modalVisible}
             animationType='slide'
             onRequestClose={() => {setModalVisible(false)}}
+            hardwareAccelerated = {true}
             >
 
-                <ModalViewCamera w={w}>
+                <ModalViewCamera w={w} onPress={() => {setModalVisible(false)}}>
 
                     <Linha/>
 
