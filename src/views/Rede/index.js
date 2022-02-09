@@ -33,13 +33,13 @@ import {
 
 } from './redeStyle';
 
-export default function Rede({ navigation, route }){
+export default function Rede({ navigation }){
 
 
     const w = Dimensions.get('window').width;
 
     const [seguidoresLista, setSeguidoresLista] = React.useState([]);
-    const [image, setImage] = React.useState(userDados && userDados[0].fotoUrl);
+    const [image, setImage] = React.useState(null);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [userDados, setUserDados] = React.useState([{nome: '', fotoUrl: ''}]);
 
@@ -110,8 +110,8 @@ export default function Rede({ navigation, route }){
                 .then( (result) => {
                     let dadosStr = JSON.stringify(result)
                     let dados = JSON.parse(dadosStr);
-                    setUserDados(dados.data);
                     setImage(userDados[0].fotoUrl);
+                    setUserDados(dados.data);
                     
                 })
                 .catch((err) => {
