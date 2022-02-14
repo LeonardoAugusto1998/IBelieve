@@ -39,9 +39,8 @@ export default function Rede({ navigation, route }){
     const w = Dimensions.get('window').width;
 
     const [seguidoresLista, setSeguidoresLista] = React.useState([]);
-    const [image, setImage] = React.useState(userDados && userDados[0].fotoUrl);
+    const [image, setImage] = React.useState(null);
     const [modalVisible, setModalVisible] = React.useState(false);
-    const [userDados, setUserDados] = React.useState([{nome: '', fotoUrl: ''}]);
 
 
     async function handleChangePhotoCamera(){
@@ -94,41 +93,19 @@ export default function Rede({ navigation, route }){
 
     React.useEffect(()=>{
 
-        buscarDadosUser();
+        inserirFoto();
         buscarRede();
 
-    }, [])
+    }, []);
 
-
-    async function buscarDadosUser(){
-
-        await AsyncStorage.getItem('@user')
-        .then( async (response) => { 
-            let data = { email: JSON.parse(response)}
-
-            await api.post('BuscarDadosUser', data)
-                .then( (result) => {
-                    let dadosStr = JSON.stringify(result)
-                    let dados = JSON.parse(dadosStr);
-                    setUserDados(dados.data);
-                    setImage(userDados[0].fotoUrl);
-                    
-                })
-                .catch((err) => {
-                    console.log('Deu erro 1 ' + err)
-                })
-        })
-        .catch((err) => {
-            console.log('deu erro 1.1 --> ' + err)
-        })
-        
-  
+    function inserirFoto(){
+        setImage(route.params?.fotoPerfil);
     }
 
 
-
-
     async function buscarRede(){
+
+        
 
         await AsyncStorage.getItem('@user')
         .then( async (response) => {
@@ -148,12 +125,6 @@ export default function Rede({ navigation, route }){
             console.log('deu erro 1.2 --> ' + err)
         })
         
-    }
-
-
-    
-    function nome(index){
-        return userDados[0].nome.split(' ')[index];
     }
 
 
@@ -199,7 +170,7 @@ export default function Rede({ navigation, route }){
                     </GrupoView>
                     
                     
-                    <Nome>{nome(0)} {nome(1)}</Nome>
+                    <Nome>{route.params?.nome.split(' ')[0]} {route.params?.nome.split(' ')[1]}</Nome>
                     <TextoDeBaixo>{seguidoresLista.length} Pessoas convidadas</TextoDeBaixo>
                 </NomesLogo>
 

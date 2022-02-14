@@ -119,7 +119,6 @@ app.post('/buscar', (req, res) => {
             console.log('Erro na busca das redes ' + err);
         } else {
             res.send(result);
-            console.log(result);
         }
     })
 
@@ -139,7 +138,6 @@ app.post('/buscarRede', (req, res) => {
             console.log('Erro na busca das redes na pag Rede ' + err);
         } else {
             res.send(result);
-            console.log(result);
         }
     })
 
@@ -157,7 +155,21 @@ app.post('/BuscarDadosUser', (req, res) => {
             console.log('Erro para buscar dados do user -->' + err);
         } else {
             res.send(JSON.stringify(result));
-            console.log('Meus dados --> ' + JSON.stringify(result));
+        }
+    })
+})
+
+
+
+app.post('/buscarEstabelecimentos', (req, res) => {
+    const SQL_SEARCH_ESTABELECIMENTOS = 'SELECT * FROM ibelieve.estabelecimentos';
+
+    db.query(SQL_SEARCH_ESTABELECIMENTOS, (err, result) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.send(JSON.stringify(result));
+            console.log(result);
         }
     })
 })

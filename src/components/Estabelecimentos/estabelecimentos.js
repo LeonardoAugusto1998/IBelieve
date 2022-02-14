@@ -44,7 +44,7 @@ export const estabelecimentos = [
         fotoUrl: 'https://media-exp1.licdn.com/dms/image/C560BAQFzHqqk5S0sAA/company-logo_200_200/0/1618230631209?e=2159024400&v=beta&t=nJugV9gdMiueAE0DsNaO7096eA7Opx8vg0gtcAZ6FRw',
         categoria1: 'Comércio',
         categoria2: 'Bem-estar',
-        rua: 'Alca Viaria 13 km 1,5',
+        rua: 'Alca Viaria km 1,5',
         numero: '',
         cidade: 'Marituba',
         estado: 'PA',
