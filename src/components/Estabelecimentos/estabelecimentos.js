@@ -162,7 +162,7 @@ export function Estabelecimentos({item}){
                 {data.status ? <></> : <TextoPequeno>Toque para ver mais</TextoPequeno>}
             </NomesView>
 
-            {data.status ? 
+            {!data.status ? 
                 <MenosIcon>
                     <Menos width={20} height={20}/>
                 </MenosIcon>
@@ -174,7 +174,7 @@ export function Estabelecimentos({item}){
 
 
 
-           {data.status ? 
+           {!data.status ? 
            <ParteInvisivel w={w}>
 
            <Linha2/>

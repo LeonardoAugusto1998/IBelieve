@@ -3,7 +3,6 @@ import { View, BackHandler, StatusBar, Dimensions, Alert } from 'react-native';
 import Logo from '../../assets/logonew.png';
 import GroupSvg from '../../assets/group.svg';
 import SearchSvg from '../../assets/search.svg';
-import { categorias } from '../../components/Categorias/categorias';
 import { Estabelecimentos } from '../../components/Estabelecimentos/estabelecimentos';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -31,7 +30,8 @@ export default function Principal({ navigation }){
 
     const w = Dimensions.get('window').width;
     const h = Dimensions.get('window').height;
-    const [lista, setLista] = React.useState(categorias);
+    const [lista, setLista] = React.useState([]);
+    const [estaticoLista, setEstaticoLista] = React.useState([]);
     const [listaEstab, setListaEstab] = React.useState([]);
     const [estatico, setEstatico] = React.useState([]);
     const [order, setOrder] = React.useState(false);
@@ -49,6 +49,7 @@ export default function Principal({ navigation }){
         buscarDadosUser();
         buscar_dados();
         buscar_estabelecimentos();
+        buscar_categorias();
 
         const backAction = () => {
           Alert.alert("Atenção", "Tem certeza que deseja sair?", [
@@ -74,6 +75,20 @@ export default function Principal({ navigation }){
 
 
       }, []);
+
+
+
+      async function buscar_categorias(){
+          await api.get('buscarCategorias')
+          .then( response => {
+            let dataStr = JSON.stringify(response);
+            let data = JSON.parse(dataStr);
+
+            setLista(data.data);
+            setEstaticoLista(data.data);
+
+          })
+      }
 
 
 
@@ -132,13 +147,14 @@ export default function Principal({ navigation }){
 
 
     async function buscar_estabelecimentos(){
-        const response_estab = api.post('buscarEstabelecimentos')
-        .then( () => {
-            let data = JSON.parse(response_estab)
+        api.get('buscarEstabelecimentos')
+        .then( response_estab => {
+            let dataStr = JSON.stringify(response_estab)
+            let data = JSON.parse(dataStr)
             console.log(JSON.stringify(response_estab));
 
-            setListaEstab(data);
-            setEstatico(data);
+            setListaEstab(data.data);
+            setEstatico(data.data);
         })
         .catch((err) => {
             console.log('Não buscou os estabelecimentos --> ' + err)
@@ -148,7 +164,7 @@ export default function Principal({ navigation }){
 
 
     React.useEffect(()=>{
-        setLista(categorias);
+        setLista(estaticoLista);
         setListaEstab(estatico)
     },[ 
         lista,

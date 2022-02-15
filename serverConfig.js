@@ -161,7 +161,7 @@ app.post('/BuscarDadosUser', (req, res) => {
 
 
 
-app.post('/buscarEstabelecimentos', (req, res) => {
+app.get('/buscarEstabelecimentos', (req, res) => {
     const SQL_SEARCH_ESTABELECIMENTOS = 'SELECT * FROM ibelieve.estabelecimentos';
 
     db.query(SQL_SEARCH_ESTABELECIMENTOS, (err, result) => {
@@ -170,6 +170,21 @@ app.post('/buscarEstabelecimentos', (req, res) => {
         } else {
             res.send(JSON.stringify(result));
             console.log(result);
+        }
+    })
+})
+
+
+
+app.get('/buscarCategorias', (req, res) => {
+    const SQL_SEARCH_CATEGORIAS = 'SELECT * FROM ibelieve.categorias';
+
+    db.query(SQL_SEARCH_CATEGORIAS, (err, result_categ) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.send(JSON.stringify(result_categ));
+            console.log(result_categ);
         }
     })
 })
