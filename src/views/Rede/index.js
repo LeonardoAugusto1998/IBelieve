@@ -33,7 +33,7 @@ import {
 
 } from './redeStyle';
 
-export default function Rede({ navigation }){
+export default function Rede({ navigation, route }){
 
 
     const w = Dimensions.get('window').width;
@@ -41,6 +41,10 @@ export default function Rede({ navigation }){
     const [seguidoresLista, setSeguidoresLista] = React.useState([]);
     const [image, setImage] = React.useState(null);
     const [modalVisible, setModalVisible] = React.useState(false);
+<<<<<<< Updated upstream
+=======
+    const [userDados, setUserDados] = React.useState(route.params?.nome);
+>>>>>>> Stashed changes
 
 
     async function handleChangePhotoCamera(){
@@ -93,13 +97,18 @@ export default function Rede({ navigation }){
 
     React.useEffect(()=>{
 
+<<<<<<< Updated upstream
         inserirFoto();
+=======
+        buscarImagemUser();
+>>>>>>> Stashed changes
         buscarRede();
 
     }, []);
 
 
 
+<<<<<<< Updated upstream
     async function buscarDadosUser(){
 
         await AsyncStorage.getItem('@user')
@@ -123,12 +132,17 @@ export default function Rede({ navigation }){
         })
         
   
+=======
+    function buscarImagemUser(){
+        setImage(route.params?.fotoUrl);
+        setUserDados(route.params?.nome);
+    }
+>>>>>>> Stashed changes
 
     function inserirFoto(){
         setImage(route.params?.fotoPerfil);
 
     }
-
 
     async function buscarRede(){
 
