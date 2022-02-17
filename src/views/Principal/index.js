@@ -3,8 +3,7 @@ import { View, BackHandler, StatusBar, Dimensions, Alert } from 'react-native';
 import Logo from '../../assets/logonew.png';
 import GroupSvg from '../../assets/group.svg';
 import SearchSvg from '../../assets/search.svg';
-import { categorias } from '../../components/Categorias/categorias';
-import { estabelecimentos, Estabelecimentos} from '../../components/Estabelecimentos/estabelecimentos';
+import { Estabelecimentos } from '../../components/Estabelecimentos/estabelecimentos';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     Container,
@@ -23,18 +22,21 @@ import {
     ListaCategorias,
     ListaEstabelecimento,
     Linha,
-    ModalView
 } from './principalStyle';
 import api from '../../services/api';
 
-export default function Principal({ navigation, route }){
+export default function Principal({ navigation }){
 
 
     const w = Dimensions.get('window').width;
     const h = Dimensions.get('window').height;
-    const [lista, setLista] = React.useState(categorias);
-    const [listaEstab, setListaEstab] = React.useState(estabelecimentos);
+    const [lista, setLista] = React.useState([]);
+    const [estaticoLista, setEstaticoLista] = React.useState([]);
+    const [listaEstab, setListaEstab] = React.useState([]);
+    const [estatico, setEstatico] = React.useState([]);
     const [order, setOrder] = React.useState(false);
+    const [image, setImage] = React.useState('');
+    const [nome, setNome] = React.useState('');
 
     const [digit, setDigit] = React.useState('');
 
@@ -44,7 +46,10 @@ export default function Principal({ navigation, route }){
 
     React.useEffect(() => {
 
+        buscarDadosUser();
         buscar_dados();
+        buscar_estabelecimentos();
+        buscar_categorias();
 
         const backAction = () => {
           Alert.alert("Atenção", "Tem certeza que deseja sair?", [
@@ -71,6 +76,45 @@ export default function Principal({ navigation, route }){
 
       }, []);
 
+
+
+      async function buscar_categorias(){
+          await api.get('buscarCategorias')
+          .then( response => {
+            let dataStr = JSON.stringify(response);
+            let data = JSON.parse(dataStr);
+
+            setLista(data.data);
+            setEstaticoLista(data.data);
+
+          })
+      }
+
+
+
+      async function buscarDadosUser(){
+
+        await AsyncStorage.getItem('@user')
+        .then( async (response) => { 
+            let data = { email: JSON.parse(response)}
+
+            await api.post('BuscarDadosUser', data)
+                .then((result) => {
+                    let dadosStr = JSON.stringify(result)
+                    let dados = JSON.parse(dadosStr);
+                    setNome(dados.data[0].nome);
+                    setImage(dados.data[0].fotoUrl);
+                })
+                .catch((err) => {
+                    console.log('Deu erro 1 ' + err)
+                })
+        })
+        .catch((err) => {
+            console.log('deu erro 1.1 --> ' + err)
+        })
+        
+  
+    }
 
 
 
@@ -102,28 +146,40 @@ export default function Principal({ navigation, route }){
 
 
 
+    async function buscar_estabelecimentos(){
+        api.get('buscarEstabelecimentos')
+        .then( response_estab => {
+            let dataStr = JSON.stringify(response_estab)
+            let data = JSON.parse(dataStr)
+            console.log(JSON.stringify(response_estab));
+
+            setListaEstab(data.data);
+            setEstatico(data.data);
+        })
+        .catch((err) => {
+            console.log('Não buscou os estabelecimentos --> ' + err)
+        })
+    }
 
 
 
     React.useEffect(()=>{
-        setLista(categorias);
-        setListaEstab(estabelecimentos)
+        setLista(estaticoLista);
+        setListaEstab(estatico)
     },[ 
         lista,
-        estabelecimentos
+        estatico
     ]);
-
-
 
 
 
     React.useEffect( () => {
 
         if(digit === ''){
-            setListaEstab(estabelecimentos)
+            setListaEstab(estatico)
         }else{
             setListaEstab(
-                estabelecimentos.filter( item =>{
+                estatico.filter( item =>{
                     if(item.nome.toLowerCase().indexOf(digit.toLowerCase()) > -1) {
                         return true
                     }else{
@@ -136,18 +192,15 @@ export default function Principal({ navigation, route }){
     }, [digit]);
 
 
-
-    
-
     function clickCategoria({ item }){
         if( order ){
 
-            setListaEstab(estabelecimentos);
+            setListaEstab(estatico);
             setOrder( false );
 
         }else{
             setListaEstab(
-                estabelecimentos.filter( doc => {
+                estatico.filter( doc => {
                     if(doc.categoria1 === null) {
                        return doc.categoria2 === item.nome
                     }
@@ -183,7 +236,7 @@ export default function Principal({ navigation, route }){
                 <LogoImg source={Logo}/>
 
 
-                <LogoRede onPress={ () => {navigation.navigate('Rede')}}>
+                <LogoRede onPress={ () => {navigation.navigate('Rede', {fotoPerfil: image, nome: nome})}}>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>
