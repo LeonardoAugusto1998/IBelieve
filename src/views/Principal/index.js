@@ -39,6 +39,9 @@ export default function Principal({ navigation }){
     const [nome, setNome] = React.useState('');
 
     const [digit, setDigit] = React.useState('');
+    const [image, setImage] = React.useState('');
+    const [nome, setNome] = React.useState('');
+    const [data, setData] = React.useState('');
 
     const [userDados, setUserDados] = React.useState([]);
 
@@ -50,6 +53,7 @@ export default function Principal({ navigation }){
         buscar_dados();
         buscar_estabelecimentos();
         buscar_categorias();
+        buscarDadosUser();
 
         const backAction = () => {
           Alert.alert("Atenção", "Tem certeza que deseja sair?", [
@@ -119,6 +123,33 @@ export default function Principal({ navigation }){
 
 
     async function buscar_dados(){
+      async function buscarDadosUser(){
+
+        await AsyncStorage.getItem('@user')
+        .then( async (response) => { 
+            let data_JSON = { email: JSON.parse(response)}
+
+            await api.post('BuscarDadosUser', data_JSON)
+                .then( (result) => {
+                    let dadosStr = JSON.stringify(result)
+                    let dados = JSON.parse(dadosStr);
+                    setData(dados.data);
+                    setImage(data[0].fotoUrl);
+                    setNome(data[0].nome);
+                })
+                .catch((err) => {
+                    console.log('Deu erro 1 ' + err)
+                })
+        })
+        .catch((err) => {
+            console.log('deu erro 1.1 --> ' + err)
+        })
+        
+  
+    }
+
+
+      async function buscar_dados(){
 
         await AsyncStorage.getItem('@user')
         .then( async (resp) => {
@@ -234,6 +265,7 @@ export default function Principal({ navigation }){
 
 
                 <LogoRede onPress={ () => {navigation.navigate('Rede', {fotoPerfil: image, nome: nome})}}>
+                <LogoRede onPress={ () => {navigation.navigate('Rede', {fotoUrl: image, nome: nome})}}>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>
@@ -314,4 +346,5 @@ export default function Principal({ navigation }){
 
         </Container>
     );
+}
 }
