@@ -159,7 +159,7 @@ export function Estabelecimentos({item}){
                     {data.categoria1 !== null ?  <CategoriaEstab color={colorCat1}>{data.categoria1}</CategoriaEstab> : <></>}
                     {data.categoria2 !== null ?  <CategoriaEstab color={colorCat2}>{data.categoria2}</CategoriaEstab> : <></>}
                 </View>
-                {data.status ? <></> : <TextoPequeno>Toque para ver mais</TextoPequeno>}
+                {!data.status ? <></> : <TextoPequeno>Toque para ver mais</TextoPequeno>}
             </NomesView>
 
             {!data.status ? 

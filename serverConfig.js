@@ -184,7 +184,6 @@ app.get('/buscarCategorias', (req, res) => {
             console.log(err)
         } else {
             res.send(JSON.stringify(result_categ));
-            console.log(result_categ);
         }
     })
 })

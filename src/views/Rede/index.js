@@ -4,6 +4,7 @@ import BackArrow from '../../assets/arrow.svg';
 import logo from '../../assets/logonew.png';
 import IconGroup from '../../assets/group.svg';
 import Camera from '../../assets/camera.svg';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Seguidores } from '../../components/Seguidores/seguidores';
 import avatar from '../../assets/avatar.jpg';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -206,9 +207,9 @@ export default function Rede({ navigation, route }){
             hardwareAccelerated = {true}
             >
 
-                <ModalViewCamera w={w} onPress={() => {setModalVisible(false)}}>
+                <ModalViewCamera w={w} onPress={() => { setModalVisible(false) }}>
 
-                    <Linha/>
+                    <Linha onPress={() => { setModalVisible(false) }}/>
 
                     
                     <Botoes cor='#E6E6FA' w={w} onPress={ handleChangePhotoCamera }>
@@ -218,7 +219,7 @@ export default function Rede({ navigation, route }){
 
                     <Botoes cor='#F0FFF0' w={w} onPress={ handleChangePhotoLibrary }>
                         <AbrirCamera>Galeria </AbrirCamera>
-                        <Camera width={20} height={20}/>
+                        <Icon name='folder-open' size={20}/>
                     </Botoes>
 
 

@@ -87,7 +87,7 @@ margin-top: 20px;
 
 export const CategoriaView = styled.TouchableOpacity`
 flex-direction: row;
-max-height: 400px;
+max-height: 300px;
 border-radius: 15px;
 border-width: 1.5px;
 border-color: #808080;
@@ -108,7 +108,7 @@ font-weight: bold;
 
 export const ListaCategorias = styled.FlatList`
 margin-bottom: 15px;
-height: 190px;
+height: 100px;
 `
 
 export const ListaEstabelecimento = styled.FlatList`

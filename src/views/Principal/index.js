@@ -78,7 +78,7 @@ export default function Principal({ navigation }){
 
 
 
-      async function buscar_categorias(){
+    async function buscar_categorias(){
           await api.get('buscarCategorias')
           .then( response => {
             let dataStr = JSON.stringify(response);
@@ -92,7 +92,7 @@ export default function Principal({ navigation }){
 
 
 
-      async function buscarDadosUser(){
+    async function buscarDadosUser(){
 
         await AsyncStorage.getItem('@user')
         .then( async (response) => { 
@@ -118,7 +118,7 @@ export default function Principal({ navigation }){
 
 
 
-      async function buscar_dados(){
+    async function buscar_dados(){
 
         await AsyncStorage.getItem('@user')
         .then( async (resp) => {
@@ -151,7 +151,6 @@ export default function Principal({ navigation }){
         .then( response_estab => {
             let dataStr = JSON.stringify(response_estab)
             let data = JSON.parse(dataStr)
-            console.log(JSON.stringify(response_estab));
 
             setListaEstab(data.data);
             setEstatico(data.data);
@@ -228,8 +227,6 @@ export default function Principal({ navigation }){
 
 
 
-
-
             <AreaLogo>
 
 
@@ -248,11 +245,8 @@ export default function Principal({ navigation }){
 
 
 
-
-
             <BemVindo>BEM-VINDO</BemVindo>
             <Conheca>Conheça os nossos Parceiros</Conheca>
-
 
 
 
@@ -284,7 +278,7 @@ export default function Principal({ navigation }){
                     renderItem={ ({ item }) => {
                         return(
                             <CategoriaView w={w} h={h} onPress={ () => { clickCategoria({item}) } }>
-                                <CategoriaText>{item.nome}</CategoriaText>
+                                <CategoriaText>{ item.nome }</CategoriaText>
                             </CategoriaView>
                         );
                     }}
