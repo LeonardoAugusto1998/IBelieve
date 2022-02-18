@@ -37,10 +37,7 @@ export default function Principal({ navigation }){
     const [order, setOrder] = React.useState(false);
     const [image, setImage] = React.useState('');
     const [nome, setNome] = React.useState('');
-
     const [digit, setDigit] = React.useState('');
-    const [image, setImage] = React.useState('');
-    const [nome, setNome] = React.useState('');
     const [data, setData] = React.useState('');
 
     const [userDados, setUserDados] = React.useState([]);
@@ -49,7 +46,6 @@ export default function Principal({ navigation }){
 
     React.useEffect(() => {
 
-        buscarDadosUser();
         buscar_dados();
         buscar_estabelecimentos();
         buscar_categorias();
@@ -122,7 +118,6 @@ export default function Principal({ navigation }){
 
 
 
-    async function buscar_dados(){
       async function buscarDadosUser(){
 
         await AsyncStorage.getItem('@user')
@@ -265,7 +260,6 @@ export default function Principal({ navigation }){
 
 
                 <LogoRede onPress={ () => {navigation.navigate('Rede', {fotoPerfil: image, nome: nome})}}>
-                <LogoRede onPress={ () => {navigation.navigate('Rede', {fotoUrl: image, nome: nome})}}>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>
@@ -346,5 +340,4 @@ export default function Principal({ navigation }){
 
         </Container>
     );
-}
 }

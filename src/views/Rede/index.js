@@ -42,10 +42,8 @@ export default function Rede({ navigation, route }){
     const [seguidoresLista, setSeguidoresLista] = React.useState([]);
     const [image, setImage] = React.useState(null);
     const [modalVisible, setModalVisible] = React.useState(false);
-<<<<<<< Updated upstream
-=======
+
     const [userDados, setUserDados] = React.useState(route.params?.nome);
->>>>>>> Stashed changes
 
 
     async function handleChangePhotoCamera(){
@@ -98,18 +96,15 @@ export default function Rede({ navigation, route }){
 
     React.useEffect(()=>{
 
-<<<<<<< Updated upstream
+        buscarDadosUser();
         inserirFoto();
-=======
         buscarImagemUser();
->>>>>>> Stashed changes
         buscarRede();
 
     }, []);
 
 
 
-<<<<<<< Updated upstream
     async function buscarDadosUser(){
 
         await AsyncStorage.getItem('@user')
@@ -131,14 +126,12 @@ export default function Rede({ navigation, route }){
         .catch((err) => {
             console.log('deu erro 1.1 --> ' + err)
         })
-        
+    } 
   
-=======
     function buscarImagemUser(){
         setImage(route.params?.fotoUrl);
         setUserDados(route.params?.nome);
     }
->>>>>>> Stashed changes
 
     function inserirFoto(){
         setImage(route.params?.fotoPerfil);
