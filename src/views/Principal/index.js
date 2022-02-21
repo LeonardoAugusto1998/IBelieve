@@ -46,10 +46,10 @@ export default function Principal({ navigation }){
 
     React.useEffect(() => {
 
+        buscarDadosUser();
         buscar_dados();
         buscar_estabelecimentos();
         buscar_categorias();
-        buscarDadosUser();
 
         const backAction = () => {
           Alert.alert("Atenção", "Tem certeza que deseja sair?", [
@@ -91,33 +91,6 @@ export default function Principal({ navigation }){
       }
 
 
-
-    async function buscarDadosUser(){
-
-        await AsyncStorage.getItem('@user')
-        .then( async (response) => { 
-            let data = { email: JSON.parse(response)}
-
-            await api.post('BuscarDadosUser', data)
-                .then((result) => {
-                    let dadosStr = JSON.stringify(result)
-                    let dados = JSON.parse(dadosStr);
-                    setNome(dados.data[0].nome);
-                    setImage(dados.data[0].fotoUrl);
-                })
-                .catch((err) => {
-                    console.log('Deu erro 1 ' + err)
-                })
-        })
-        .catch((err) => {
-            console.log('deu erro 1.1 --> ' + err)
-        })
-        
-  
-    }
-
-
-
       async function buscarDadosUser(){
 
         await AsyncStorage.getItem('@user')
@@ -125,12 +98,13 @@ export default function Principal({ navigation }){
             let data_JSON = { email: JSON.parse(response)}
 
             await api.post('BuscarDadosUser', data_JSON)
-                .then( (result) => {
-                    let dadosStr = JSON.stringify(result)
-                    let dados = JSON.parse(dadosStr);
-                    setData(dados.data);
-                    setImage(data[0].fotoUrl);
-                    setNome(data[0].nome);
+                .then( result => {
+                    let docStr = JSON.stringify(result)
+                    let doc = JSON.parse(docStr);
+
+                    setData(doc.data);
+
+                    console.log('Os dados ' + data)
                 })
                 .catch((err) => {
                     console.log('Deu erro 1 ' + err)

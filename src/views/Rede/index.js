@@ -74,6 +74,7 @@ export default function Rede({ navigation, route }){
 
     }
 
+
     async function handleChangePhotoLibrary(){
         
         setModalVisible(false);
@@ -93,51 +94,20 @@ export default function Rede({ navigation, route }){
     }
 
 
-
     React.useEffect(()=>{
 
-        buscarDadosUser();
         inserirFoto();
-        buscarImagemUser();
         buscarRede();
 
     }, []);
 
-
-
-    async function buscarDadosUser(){
-
-        await AsyncStorage.getItem('@user')
-        .then( async (response) => { 
-            let data = { email: JSON.parse(response)}
-
-            await api.post('BuscarDadosUser', data)
-                .then( (result) => {
-                    let dadosStr = JSON.stringify(result)
-                    let dados = JSON.parse(dadosStr);
-                    setImage(userDados[0].fotoUrl);
-                    setUserDados(dados.data);
-                    
-                })
-                .catch((err) => {
-                    console.log('Deu erro 1 ' + err)
-                })
-        })
-        .catch((err) => {
-            console.log('deu erro 1.1 --> ' + err)
-        })
-    } 
-  
-    function buscarImagemUser(){
-        setImage(route.params?.fotoUrl);
-        setUserDados(route.params?.nome);
-    }
 
     function inserirFoto(){
         setImage(route.params?.fotoPerfil);
 
     }
 
+    
     async function buscarRede(){
 
         

@@ -136,12 +136,12 @@ export function Estabelecimentos({item}){
             setData( prev =>{
                 return {...prev, status: true}
             });
-            setBorder(0);
+            setBorder(5);
         } else {
             setData( prev =>{
                 return {...prev, status: false}
             });
-            setBorder(5);
+            setBorder(0);
         }
     }
 
