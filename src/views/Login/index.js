@@ -145,7 +145,7 @@ export default function Login({ navigation }){
         resizeMode="cover"
         >
 
-            <StatusBar backgroundColor={'#DFC411'} />
+            <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
 
                             <ScrollView showsVerticalScrollIndicator={false}>
             

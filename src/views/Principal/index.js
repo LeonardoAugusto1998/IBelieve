@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, BackHandler, StatusBar, Dimensions, Alert } from 'react-native';
+import { View, BackHandler, StatusBar, Dimensions, Alert, Text } from 'react-native';
 import Logo from '../../assets/logonew.png';
 import GroupSvg from '../../assets/group.svg';
 import SearchSvg from '../../assets/search.svg';
@@ -102,9 +102,8 @@ export default function Principal({ navigation }){
                     let docStr = JSON.stringify(result)
                     let doc = JSON.parse(docStr);
 
-                    setData(doc.data);
+                    setData(doc.data[0]);
 
-                    console.log('Os dados ' + data)
                 })
                 .catch((err) => {
                     console.log('Deu erro 1 ' + err)
@@ -223,7 +222,7 @@ export default function Principal({ navigation }){
 
         <Container>
             
-            <StatusBar backgroundColor={'#DCDCDC'}/>
+            <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
 
 
 
@@ -233,7 +232,7 @@ export default function Principal({ navigation }){
                 <LogoImg source={Logo}/>
 
 
-                <LogoRede onPress={ () => {navigation.navigate('Rede', {fotoPerfil: image, nome: nome})}}>
+                <LogoRede onPress={ () => {navigation.navigate('Rede', {fotoPerfil: data.fotoUrl, nome: data.nome})}}>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>
@@ -288,20 +287,28 @@ export default function Principal({ navigation }){
             
 
 
-            
-                <ListaEstabelecimento
-                    w={w}
-                    data={listaEstab}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={item => item.id}
-                    renderItem={ ({ item }) => {                        
-                        return(
-                            <View>
-                                <Estabelecimentos item={item}/>
-                            </View>
-                        );
-                    }}
-                    />
+                    {estatico.length === 0 
+                    
+                    ? 
+                    
+                    <Text style={{fontSize: 18, margin: 'auto'}}>Não tem estabelecimentos ainda</Text> 
+                    
+                    : 
+                    
+                    <ListaEstabelecimento
+                        w={w}
+                        data={listaEstab}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={item => item.id}
+                        renderItem={ ({ item }) => {                        
+                            return(
+                                <View>
+                                    <Estabelecimentos item={item}/>
+                                </View>
+                            );
+                        }}
+                        />
+                    }
 
 
 

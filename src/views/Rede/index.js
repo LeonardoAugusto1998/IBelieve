@@ -137,7 +137,7 @@ export default function Rede({ navigation, route }){
 
         <Container>
 
-            <StatusBar backgroundColor={'#DCDCDC'}/>
+<StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
             
 
             <Cabecalho>
