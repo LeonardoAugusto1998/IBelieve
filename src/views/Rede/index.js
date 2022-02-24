@@ -86,8 +86,12 @@ export default function Rede({ navigation, route }){
 
         await launchImageLibrary(options)
         .then( (info=>{
+
+            //aqui que vai ficar o código pára colocar no firebase storage
+
+
             setImage(info.assets[0].uri);
-            console.log(info.assets[0].uri);
+            console.log(info.assets[0].fileName);
             
         }))
 
