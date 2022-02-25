@@ -10,7 +10,8 @@ import avatar from '../../assets/avatar.jpg';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
-
+import storage from '@react-native-firebase/storage';
+import firebase from '../../services/firebaseConnection';
 import { 
     Container,
     LogoImg,
@@ -85,16 +86,21 @@ export default function Rede({ navigation, route }){
         }
 
         await launchImageLibrary(options)
-        .then( (info=>{
+        .then( async info => {
 
             //aqui que vai ficar o código pára colocar no firebase storage
 
 
             setImage(info.assets[0].uri);
             console.log(info.assets[0].fileName);
+
+            try {
+                await storage().ref(info.assets[0].fileName).putFile(info.assets[0].uri)
+            } catch (e) {
+                console.log('Erro no storage --> ' + e);
+            }
             
-            
-        }))
+        })
 
     }
 

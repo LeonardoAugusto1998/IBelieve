@@ -35,8 +35,6 @@ export default function Principal({ navigation }){
     const [listaEstab, setListaEstab] = React.useState([]);
     const [estatico, setEstatico] = React.useState([]);
     const [order, setOrder] = React.useState(false);
-    const [image, setImage] = React.useState('');
-    const [nome, setNome] = React.useState('');
     const [digit, setDigit] = React.useState('');
     const [data, setData] = React.useState('');
 
