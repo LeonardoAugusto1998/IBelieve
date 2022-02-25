@@ -93,6 +93,7 @@ export default function Rede({ navigation, route }){
             setImage(info.assets[0].uri);
             console.log(info.assets[0].fileName);
             
+            
         }))
 
     }
