@@ -190,6 +190,23 @@ app.get('/buscarCategorias', (req, res) => {
 
 
 
+app.post('/trocarFoto', (req, res) => {
+    url = req.body.url;
+    email = req .body.email;
+    const SQL_CHANGE_PHOTO = 'UPDATE ibelieve.usuarios SET fotoUrl = ? WHERE email = ?';
+
+    db.query(SQL_CHANGE_PHOTO, [url, email], (err, result) => {
+        if(err){
+            console.log('Erro para mudar a foto --> ' + err);
+        } else {
+            console.log('Trocou a foto com sucesso ! --> ' + result);
+        }
+    })
+
+})
+
+
+
 
 app.listen(3001, () => {
    console.log('Servidor Rodando com Sucesso na porta 3001')

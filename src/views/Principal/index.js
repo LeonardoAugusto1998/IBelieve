@@ -230,7 +230,7 @@ export default function Principal({ navigation }){
                 <LogoImg source={Logo}/>
 
 
-                <LogoRede onPress={ () => {navigation.navigate('Rede', {fotoPerfil: data.fotoUrl, nome: data.nome})}}>
+                <LogoRede onPress={ async () => { await buscarDadosUser().then(()=>{ navigation.navigate('Rede', {fotoPerfil: data.fotoUrl, nome: data.nome}) });}}>
                     <View style={{marginLeft:5}}>
                         <GroupSvg width={22} height={20}/>
                     </View>

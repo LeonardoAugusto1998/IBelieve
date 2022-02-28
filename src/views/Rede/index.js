@@ -10,8 +10,10 @@ import avatar from '../../assets/avatar.jpg';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
-import storage from '@react-native-firebase/storage';
-import firebase from '../../services/firebaseConnection';
+import firebaseConfig from '../../services/firebaseConnection';
+import { initializeApp } from 'firebase/app';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
 import { 
     Container,
     LogoImg,
@@ -34,6 +36,9 @@ import {
     Botoes,
 
 } from './redeStyle';
+import axios from 'axios';
+
+initializeApp(firebaseConfig);
 
 export default function Rede({ navigation, route }){
 
@@ -44,13 +49,11 @@ export default function Rede({ navigation, route }){
     const [image, setImage] = React.useState(null);
     const [modalVisible, setModalVisible] = React.useState(false);
 
-    const [userDados, setUserDados] = React.useState(route.params?.nome);
-
-
     async function handleChangePhotoCamera(){
                
         setModalVisible(false);
         const options = {
+
             mediaType: 'photo',
             maxWidth: 90,
             maxHeight: 90,
@@ -88,17 +91,41 @@ export default function Rede({ navigation, route }){
         await launchImageLibrary(options)
         .then( async info => {
 
-            //aqui que vai ficar o código pára colocar no firebase storage
+            //aqui que vai ficar o código para colocar no storage do firebase
+            const storage = getStorage();
+            const reff = ref(storage, route.params?.nome);
 
+            const img = await fetch(info.assets[0].uri);
+            const bytes = await img.blob();
 
-            setImage(info.assets[0].uri);
-            console.log(info.assets[0].fileName);
+            await uploadBytes(reff, bytes)
+            .then(async () => {
+                
+                await getDownloadURL(reff)
+                .then ( async url => {
 
-            try {
-                await storage().ref(info.assets[0].fileName).putFile(info.assets[0].uri)
-            } catch (e) {
-                console.log('Erro no storage --> ' + e);
-            }
+                    await AsyncStorage.getItem('@user')
+                    .then( email => {
+                        
+                        const data = {url: url, email: JSON.parse(email)};
+                        api.post('trocarFoto', data)
+                        .then(() => {
+                            console.log('Foto trocada com sucesso')
+                        })
+
+                    })
+                    .catch((err) => {
+                        console.log('Aqui esta o erro para trocar a foto --> ' + err)
+                    })
+
+                    
+                })
+                .catch((err) => {
+                    console.log('erro para obter a url --> ' + err)
+                })
+                setImage(info.assets[0].uri);
+
+            })
             
         })
 
