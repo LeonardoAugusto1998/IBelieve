@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Modal, StatusBar, Dimensions, Alert} from 'react-native';
+import { View, Modal, StatusBar, Dimensions} from 'react-native';
 import BackArrow from '../../assets/arrow.svg';
 import logo from '../../assets/logonew.png';
 import IconGroup from '../../assets/group.svg';
@@ -64,16 +64,45 @@ export default function Rede({ navigation, route }){
         }
 
         await launchCamera(options)
-        .then( (info=>{
-            
-            if(info.errorCode){
-                Alert.alert('Alerta', 'Ta faltando permissao')
-            } else {
-                setImage(info.assets[0].uri);
-                console.log(info.assets[0].uri);
-            }
+        .then( async info => {
 
-        }))
+            const response = await AsyncStorage.getItem('@user')
+            
+            const storage = getStorage();
+            const reff = ref(storage, JSON.parse(response));
+
+            const img = await fetch(info.assets[0].uri);
+            const bytes = await img.blob();
+
+            await uploadBytes(reff, bytes)
+            .then(async () => {
+                
+                await getDownloadURL(reff)
+                .then ( async url => {
+
+                    await AsyncStorage.getItem('@user')
+                    .then( email => {
+                        
+                        const data = {url: url, email: JSON.parse(email)};
+                        api.post('trocarFoto', data)
+                        .then(() => {
+                            console.log('Foto trocada com sucesso')
+                        })
+
+                    })
+                    .catch((err) => {
+                        console.log('Aqui esta o erro para trocar a foto --> ' + err)
+                    })
+
+                    
+                })
+                .catch((err) => {
+                    console.log('erro para obter a url --> ' + err)
+                })
+                setImage(info.assets[0].uri);
+
+            })
+        })
 
 
     }
@@ -91,9 +120,11 @@ export default function Rede({ navigation, route }){
         await launchImageLibrary(options)
         .then( async info => {
 
+            const response = await AsyncStorage.getItem('@user')
+
             //aqui que vai ficar o código para colocar no storage do firebase
             const storage = getStorage();
-            const reff = ref(storage, route.params?.nome);
+            const reff = ref(storage, JSON.parse(response));
 
             const img = await fetch(info.assets[0].uri);
             const bytes = await img.blob();
